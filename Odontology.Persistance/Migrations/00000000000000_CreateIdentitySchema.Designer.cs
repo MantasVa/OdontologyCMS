@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Odontology.Persistance;
 using Odontology.Web.Data;
 
 namespace Odontology.Web.Data.Migrations
