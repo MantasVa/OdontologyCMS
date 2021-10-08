@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,7 +37,10 @@ namespace Odontology.Web
                 opt.Password.RequireNonAlphanumeric = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>()
               .AddDefaultUI()
-              .AddDefaultTokenProviders();
+              .AddDefaultTokenProviders()
+              .AddUserStore<UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, int>> ()
+              .AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, int>>();
+
             services.AddRazorPages();
         }
 
@@ -65,7 +69,9 @@ namespace Odontology.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

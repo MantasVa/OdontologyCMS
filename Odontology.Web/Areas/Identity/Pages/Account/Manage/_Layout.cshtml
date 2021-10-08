@@ -1,0 +1,29 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    {
+        Layout = (string)parentLayout;
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
+    }
+}
+
+
+<div style="margin-top:60px;">
+    <h4 style="text-align:center;">Keisti Paskyros Nustatymus</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <partial name="_ManageNav" />
+        </div>
+        <br />
+        <div class="col-md-12">
+                @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

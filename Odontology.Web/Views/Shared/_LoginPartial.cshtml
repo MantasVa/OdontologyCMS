@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Odontology.Domain.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li>
+        <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Sveiki, @UserManager.GetUserAsync(User).Result.Name!</a>
+    </li>
+    <li>
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button type="submit" class="btn btn-link">Atsijungti</button>
+        </form>
+    </li>
+}
+else
+{
+    <li>
+        <a class="nav-link" asp-action="Login" asp-controller="Authorization">Prisijungimas</a>
+    </li>
+    <li>
+        <a class="nav-link" asp-action="Registration" asp-controller="Authorization">Registracija</a>
+    </li>
+}

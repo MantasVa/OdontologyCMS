@@ -1,0 +1,52 @@
+﻿@model LoginViewModel
+
+@{
+    ViewBag.Title = "Prisijungimas";
+}
+
+<div id="layoutAuthentication">
+    <div id="layoutAuthentication_content">
+        <main>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-5">
+                        <div class="card shadow-lg border-0 rounded-lg mt-5">
+                            <div class="card-header"><h3 class="text-center font-weight-light">Prisijungimas</h3></div>
+                            <div class="card-body">
+                                <form method="post">
+                                    <div class="text-danger" style="list-style:none;text-align:center;">
+                                        @Html.ValidationSummary()
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div><span asp-validation-for="@Model.Email" class="text-danger"></span></div>
+                                        <label asp-for="@Model.Email" class="small mb-1" for="inputEmailAddress">El. Paštas</label>
+                                        <input asp-for="@Model.Email" class="form-control py-4" id="inputEmailAddress" type="email" placeholder="El. Paštas" />
+                                    </div>
+                                    <div class="form-group">
+                                        <div><span asp-validation-for="@Model.Password" class="text-danger"></span></div>
+                                        <label asp-for="@Model.Password" class="small mb-1" for="inputPassword">Slaptažodis</label>
+                                        <input asp-for="@Model.Password" class="form-control py-4" id="inputPassword" type="password" placeholder="Slaptažodis" />
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input asp-for="@Model.RememberMe" class="custom-control-input" id="rememberPasswordCheck" type="checkbox" />
+                                            <label asp-for="@Model.RememberMe" class="custom-control-label" for="rememberPasswordCheck">Prisiminti slaptažodį</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group align-items-center justify-content-between">
+
+                                        <div class="form-group mt-4 mb-0"><input class="btn-success btn-block" type="submit" value="Prisijungti" /></div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="small"><a asp-controller="Authorization" asp-action="Registration">Dar ne narys? Registruokis</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

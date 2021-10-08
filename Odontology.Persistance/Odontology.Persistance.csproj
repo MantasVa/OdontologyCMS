@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Odontology.Domain\Odontology.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

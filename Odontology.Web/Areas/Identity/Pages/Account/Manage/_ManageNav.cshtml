@@ -1,0 +1,18 @@
+﻿@using Odontology.Domain.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+<ul class="nav nav-pills" style="display:flex; flex-direction:row; justify-content:center">
+    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext) btn btn-ghost" id="profile" asp-page="./Index">Profilis</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext) btn btn-ghost" id="email" asp-page="./Email">El. Paštas</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext) btn btn-ghost" id="change-password" asp-page="./ChangePassword">Slaptažodis</a></li>
+</ul>
+
+<style>
+
+    li {
+        margin-right: 15px;
+    }
+
+</style>

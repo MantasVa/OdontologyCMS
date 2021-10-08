@@ -1,0 +1,89 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Odontology.Domain.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Dentmedic - @ViewBag.Title</title>
+</head>
+<body class="site-content html">
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">Dentmedic</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-md-between" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a asp-controller="Home" asp-action="Index" class="nav-link">Pradinis</a>
+                    </li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <a asp-action="PagedIndex" asp-controller="Article"
+                               asp-route-pageNumber="1" class="nav-link">Naujienos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Event"
+                               class="nav-link">Renginiai</a>
+                        </li>
+                        @if (User.IsInRole("Administratorius"))
+                        {
+                            <li class="nav-item">
+                                <a asp-action="Index" asp-controller="Admin" class="nav-link">Administratoriaus panelė</a>
+                            </li>
+                        }
+
+                    }
+                    <li class="nav-item">
+                        <a asp-controller="Home" asp-action="AboutUs" class="nav-link">Apie Mus</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <partial name="_LoginPartial" />
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div>
+        @RenderBody()
+    </div>
+
+    <footer class="pt-4 my-md-5 pt-md-5 border-top container">
+        <div class="row">
+            <div class="col-sm ml-5">
+                <p>
+                    Copyright &copy; 2021, Dentmedic
+                </p>
+
+            </div>
+            <div class="col-sm ml-5">
+                <p>Kontaktai:</p>
+                <p>El.Paštas: lietuvosktd@gmail.com</p>
+                <p>Adresas : Eivenių g. 2, Kaunas.</p>
+            </div>
+            <div class="col-sm ml-5">
+                <p>
+                    Mus galite rasti facebook: <a href="https://www.facebook.com/Lietuvosktd/" target="_blank">
+                        <ion-icon name="logo-facebook" class="facebook-icon"></ion-icon>
+                    </a>
+                </p>
+
+                <p>
+                    <a asp-action="Privacy" asp-controller="Home" class="nav-link">Privatumo politika</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ" crossorigin="anonymous"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
