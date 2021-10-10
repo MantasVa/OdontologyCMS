@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odontology.Web", "Odontolog
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odontology.Business", "Odontology.Business\Odontology.Business.csproj", "{571814A8-0E85-4690-89E3-BE34770AB16B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odontology.Persistance", "Odontology.Persistance\Odontology.Persistance.csproj", "{EC3EAE18-107B-44F1-8969-47E0F6AFB718}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odontology.Persistance", "Odontology.Persistance\Odontology.Persistance.csproj", "{EC3EAE18-107B-44F1-8969-47E0F6AFB718}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odontology.Domain", "Odontology.Domain\Odontology.Domain.csproj", "{EAE0B250-6FA3-41BE-8DD7-FE58C494758D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odontology.Domain", "Odontology.Domain\Odontology.Domain.csproj", "{EAE0B250-6FA3-41BE-8DD7-FE58C494758D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

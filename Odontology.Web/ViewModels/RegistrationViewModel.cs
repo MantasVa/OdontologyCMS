@@ -21,7 +21,7 @@ namespace Odontology.Web.ViewModels
 
         [Required(ErrorMessage = "Neįvestas Slaptažodis")]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Slaptažodžiai Nesutampa")]
+        [Compare(nameof(Password), ErrorMessage = "Slaptažodžiai Nesutampa")]
         public string ConfirmPassword { get; set; }
     }
 }

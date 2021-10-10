@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Odontology.Domain.Models
+@using Odontology.Web.Controllers
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -9,7 +10,7 @@
         <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Sveiki, @UserManager.GetUserAsync(User).Result.Name!</a>
     </li>
     <li>
-        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <form class="form-inline" asp-action="Logout" asp-controller="Authorization" asp-route-returnUrl="@Url.Action(nameof(HomeController.Index), "Home")">
             <button type="submit" class="btn btn-link">Atsijungti</button>
         </form>
     </li>
