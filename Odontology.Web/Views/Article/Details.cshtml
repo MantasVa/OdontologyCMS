@@ -1,0 +1,35 @@
+﻿@model ArticleViewModel
+@{
+    ViewData["Title"] = "Naujienos";
+    Layout = "_Layout";
+}
+
+<div class="container">
+
+    <div class="row">
+        <!-- Post Content Column -->
+        <div class="col-lg">
+
+            <!-- Title -->
+            <h1 class="mt-4">@Html.Raw(Model.Title)</h1>
+
+            <!-- Author -->
+            <p class="lead">
+                <i class="fas fa-user"></i> @Model.CreatedBy
+            </p>
+
+            <hr>
+
+            <!-- Date/Time -->
+            <p>
+                <i class="far fa-calendar-alt"></i>
+                @Model.CreatedOn.ToString("f", System.Threading.Thread.CurrentThread.CurrentCulture)
+            </p>
+            <hr>
+
+            <!-- Post Content -->
+            <p>@Html.Raw(Model.Body)</p>
+        </div>
+
+    </div>
+</div>

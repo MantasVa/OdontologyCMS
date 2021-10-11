@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Odontology.Business.DTO
+namespace Odontology.Web.ViewModels
 {
-    public class ArticleDto
+    public class ArticleViewModel
     {
         public int Id { get; set; }
 

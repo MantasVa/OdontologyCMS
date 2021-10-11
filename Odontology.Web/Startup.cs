@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Odontology.Business.Interfaces;
+using Odontology.Business.Services;
 using Odontology.Domain.Models;
 using Odontology.Persistance;
 using Odontology.Persistance.Interfaces;
@@ -25,7 +27,8 @@ namespace Odontology.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IGenericRepository<Article>, GenericRepository<Article>>();
+            services.AddScoped(typeof(IRepository <> ), typeof(Repository <> ));
+            services.AddScoped<IArticleService, ArticleService>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Odontology.Web.ViewModels
 {
@@ -23,5 +24,7 @@ namespace Odontology.Web.ViewModels
         [DataType(DataType.Password)]
         [Compare(nameof(Password), ErrorMessage = "Slaptažodžiai Nesutampa")]
         public string ConfirmPassword { get; set; }
+
+        public DateTime CreatedOn { get; set; }
     }
 }

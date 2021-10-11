@@ -7,6 +7,7 @@ using Odontology.Web.ViewModels;
 
 namespace Odontology.Web.Controllers
 {
+    [AutoValidateAntiforgeryToken]
     public class AuthorizationController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;

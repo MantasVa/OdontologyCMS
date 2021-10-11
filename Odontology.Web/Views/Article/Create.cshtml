@@ -1,0 +1,52 @@
+﻿@model ArticleCreateViewModel
+@using Microsoft.AspNetCore.Identity
+@using Odontology.Domain.Models
+@using Odontology.Web.Infrastructure
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var createUpdateTitle = Model.ViewType == ViewTypeEnum.Create ? "parašyti Įrašą" : Model.ViewType == ViewTypeEnum.Edit ? "redaguoti Įrašą" : "";
+    ViewData["Title"] = createUpdateTitle;
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div style="margin:10px">
+        <h1 class="mt-4">@createUpdateTitle</h1>
+
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            @{
+                var user = await UserManager.GetUserAsync(User);
+                string editorName = $"{user.Name} {user.Surname}";
+                if (Model.ViewType == ViewTypeEnum.Create)
+                {
+                    <input type="hidden" asp-for="Article.CreatedBy" value="@editorName" />
+                    <input type="hidden" asp-for="Article.CreatedOn" value="@DateTime.UtcNow" />
+                }
+                else if (Model.ViewType == ViewTypeEnum.Edit)
+                {
+                    <input type="hidden" asp-for="Article.CreatedOn" />
+                    <input type="hidden" asp-for="Article.CreatedBy" />
+                    <input type="hidden" asp-for="Article.UpdatedBy" value="@editorName" />
+                    <input type="hidden" asp-for="Article.UpdatedOn" value="@DateTime.UtcNow" />
+                }
+            }
+            <input type="hidden" asp-for="Article.Id" />
+
+            <div class="form-group">
+                <div><span asp-validation-for="Article.Title" class="text-danger"></span></div>
+                <label asp-for="Article.Title">Pavadinimas<span class="text-danger">*</span>:</label>
+                <input type="text" class="form-control" asp-for="Article.Title" required />
+            </div>
+
+            <div class="form-group">
+                <div><span asp-validation-for="Article.Body" class="text-danger"></span></div>
+                <label asp-for="Article.Body">Turinys<span class="text-danger">*</span>:</label>
+                <textarea asp-for="Article.Body" class="form-control"></textarea>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-success">Sukurti</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -25,19 +25,8 @@
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <li class="nav-item">
-                            <a asp-action="PagedIndex" asp-controller="Article"
-                               asp-route-pageNumber="1" class="nav-link">Naujienos</a>
+                            <a asp-action="AdminList" asp-controller="Article" class="nav-link">Naujienos</a>
                         </li>
-                        <li class="nav-item">
-                            <a asp-action="Index" asp-controller="Event"
-                               class="nav-link">Renginiai</a>
-                        </li>
-                        @if (User.IsInRole("Administratorius"))
-                        {
-                            <li class="nav-item">
-                                <a asp-action="Index" asp-controller="Admin" class="nav-link">Administratoriaus panelė</a>
-                            </li>
-                        }
 
                     }
                     <li class="nav-item">

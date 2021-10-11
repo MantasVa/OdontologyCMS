@@ -1,0 +1,70 @@
+﻿@model IEnumerable<ArticleViewModel>
+@{
+ViewData["Title"] = "Naujienos";
+Layout = "_Layout";
+}
+
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid">
+            <div class="card mb-4 mt-5">
+                <div class="card-header"><i class="fas fa-table mr-1"></i>Naujienų sąrašas</div>
+                
+                <div class="card-body">
+                    <a class="btn btn-outline-primary text-black-50" asp-action="Create"> Kurti Naujieną </a>
+                    <div class="table-responsive">
+                        <table class="table" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Pavadinimas</th>
+                                    <th>Paskutinį Kartą Redagavo</th>
+                                    <th>Autorius</th>
+                                    <th>Paskelbta</th>
+                                    <th>Daugiau</th>
+                                    <th>Redaguoti</th>
+                                    <th>Ištrinti</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Pavadinimas</th>
+                                    <th>Paskutinį Kartą Redagavo</th>
+                                    <th>Autorius</th>
+                                    <th>Paskelbta</th>
+                                    <th>Daugiau</th>
+                                    <th>Redaguoti</th>
+                                    <th>Ištrinti</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                @foreach (var post in Model)
+                                {
+                                <tr>
+                                    <td>@post.Title</td>
+                                    @{ var updateColumn = post.UpdatedBy is not null ? $"{post.UpdatedBy} | {post.UpdatedOn}" : "";}
+                                    <td>@updateColumn</td>
+                                    <td>@post.CreatedBy</td>
+                                    <td>@post.CreatedOn</td>
+                                    <td>
+                                        <a class="btn btn-outline-primary text-black-50" asp-action="Details" asp-route-id="@post.Id"> Daugiau </a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-outline-primary text-black-50" asp-action="Edit" asp-route-id="@post.Id">Redaguoti</a>
+                                    </td>
+                                    <td>
+                                        <form method="post" asp-action="Delete" asp-route-id="@post.Id">
+                                            <input type="submit" class="btn btn-outline-primary text-black-50"
+                                                   value="Naikinti" />
+                                        </form>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+

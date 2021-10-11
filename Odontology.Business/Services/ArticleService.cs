@@ -11,9 +11,9 @@ namespace Odontology.Business.Services
 {
     public class ArticleService : IArticleService
     {
-        private readonly IGenericRepository<Article> articleRepository;
+        private readonly IRepository<Article> articleRepository;
 
-        public ArticleService(IGenericRepository<Article> articleRepository)
+        public ArticleService(IRepository<Article> articleRepository)
         {
             this.articleRepository = articleRepository;
         }
@@ -25,27 +25,34 @@ namespace Odontology.Business.Services
         }
 
 
-        public IEnumerable<ArticleDto> GetAllQuery()
+        public IEnumerable<ArticleDto> GetAll()
         {
             return articleRepository.GetAllQuery().Select(a =>
                 new ArticleDto
                 {
+                    Id = a.Id,
                     Title = a.Title,
-                    Body = a.Body
+                    Body = a.Body,
+                    CreatedBy = a.CreatedBy,
+                    CreatedOn = a.CreatedOn,
+                    UpdatedBy = a.UpdatedBy,
+                    UpdatedOn = a.UpdatedOn
                 });
         }
 
-        public void AddAsync(ArticleDto article)
+        public void AddOrEdit(ArticleDto article)
         {
-            _ = articleRepository.AddAsync(article.Adapt<Article>());
+            if (article.Id == 0)
+            {
+                articleRepository.Add(article.Adapt<Article>());
+            }
+            else
+            {
+                articleRepository.UpdateAsync(article.Adapt<Article>());
+            }
         }
 
-        public void UpdateAsync(ArticleDto article)
-        {
-            _ = articleRepository.UpdateAsync(article.Adapt<Article>());
-        }
-
-        public void DeleteAsync(int id)
+        public void Delete(int id)
         {
             _ = articleRepository.DeleteAsync(id);
         }

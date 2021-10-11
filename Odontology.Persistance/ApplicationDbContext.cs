@@ -12,6 +12,8 @@ namespace Odontology.Persistance
 
         public DbSet<Article> Articles { get; set; }
 
+        public DbSet<Visit> Visits { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

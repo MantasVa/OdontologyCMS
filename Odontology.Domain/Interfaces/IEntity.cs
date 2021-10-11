@@ -8,7 +8,7 @@ namespace Odontology.Domain.Interfaces
 
         DateTime CreatedOn { get; set; }
 
-        DateTime UpdatedOn { get; set; }
+        DateTime? UpdatedOn { get; set; }
 
         string CreatedBy { get; set; }
 

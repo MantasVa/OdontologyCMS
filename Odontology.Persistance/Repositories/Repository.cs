@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Odontology.Domain.Interfaces;
@@ -6,45 +7,47 @@ using Odontology.Persistance.Interfaces;
 
 namespace Odontology.Persistance.Repositories
 {
-    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class, IEntity
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
         protected readonly ApplicationDbContext applicationDbContext;
         protected DbSet<TEntity> entities;
 
-        public GenericRepository(ApplicationDbContext applicationDbContext)
+        public Repository(ApplicationDbContext applicationDbContext)
         {
             this.applicationDbContext = applicationDbContext;
             entities = applicationDbContext.Set<TEntity>();
         }
 
         public async Task<TEntity> GetByIdAsync(int id) 
-            => await Query().Where(e => e.Id == id).FirstOrDefaultAsync();
+            => await Query().Where(e => e.Id == id).AsNoTracking().FirstOrDefaultAsync();
 
 
-        public IQueryable<TEntity> GetAllQuery() => Query();
+        public IQueryable<TEntity> GetAllQuery() => Query().AsNoTracking();
 
-        public async Task<TEntity> AddAsync(TEntity entity)
+        public TEntity Add(TEntity entity)
         {
+            if(entity == null) throw new ArgumentNullException("Entity is null");
             entities.Add(entity);
-            await applicationDbContext.SaveChangesAsync();
+            applicationDbContext.SaveChanges();
             return entity;
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            TEntity dbEntry = await GetByIdAsync(entity.Id);
+            if(entity == null) throw new ArgumentNullException("Entity is null");
+            TEntity dbEntry = GetById(entity.Id);
             if (dbEntry == null) return entity;
             applicationDbContext.Entry(dbEntry).CurrentValues.SetValues(entity);
-            await applicationDbContext.SaveChangesAsync();
+            applicationDbContext.SaveChanges();
             return entity;
         }
 
         public async Task<TEntity> DeleteAsync(int id)
         {
-            TEntity dbEntry = await GetByIdAsync(id);
+            TEntity dbEntry = GetById(id);
             if (dbEntry == null) return dbEntry;
             entities.Remove(dbEntry);
-            await applicationDbContext.SaveChangesAsync();
+            applicationDbContext.SaveChanges();
             return dbEntry;
         }
 
@@ -58,5 +61,7 @@ namespace Odontology.Persistance.Repositories
             query = query.OrderByDescending(x => x.CreatedOn);
             return query;
         }
+
+        private TEntity GetById(int id) => Query().FirstOrDefault(e => e.Id == id);
     }
 }

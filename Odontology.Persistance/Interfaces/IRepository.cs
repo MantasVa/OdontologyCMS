@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 
 namespace Odontology.Persistance.Interfaces
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IRepository<T> where T : class
     {
         Task<T> GetByIdAsync(int id);
 
         IQueryable<T> GetAllQuery();
 
-        Task<T> AddAsync(T entity);
+        T Add(T entity);
 
         Task<T> UpdateAsync(T entity);
 
