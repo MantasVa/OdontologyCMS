@@ -19,7 +19,6 @@ namespace Odontology.Web.Controllers
             this.articleService = articleService;
         }
 
-        [HttpGet]
         public IActionResult AdminList()
         {
             var articlesViewModel = articleService.GetAll().Adapt<IEnumerable<ArticleViewModel>>();
@@ -27,7 +26,6 @@ namespace Odontology.Web.Controllers
             return View(articlesViewModel);
         }
         
-        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var articleDto = await articleService.GetByIdAsync(id);
@@ -36,14 +34,12 @@ namespace Odontology.Web.Controllers
             return View(article);
         }
 
-        [HttpGet]
         public IActionResult Create() => View(new ArticleCreateViewModel
         {
             Article = new ArticleViewModel(),
             ViewType = ViewTypeEnum.Create
         });
 
-        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var articleDto = await articleService.GetByIdAsync(id);

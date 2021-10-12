@@ -20,7 +20,9 @@ namespace Odontology.Domain.Models
 
         public bool IsConfirmed { get; set; } = false;
 
-        public ICollection<Visit> UserVisits { get; set; }
+        public ICollection<Visit> Visits { get; set; }
+
+        public Employee Employee { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

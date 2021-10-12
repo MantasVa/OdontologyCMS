@@ -20,7 +20,6 @@ namespace Odontology.Web.Controllers
             this.signInManager = signInManager;
         }
 
-        [HttpGet]
         public IActionResult Registration() => View();
         
 
@@ -43,7 +42,6 @@ namespace Odontology.Web.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-        [HttpGet]
         public IActionResult Login() => View();
 
         [HttpPost]
