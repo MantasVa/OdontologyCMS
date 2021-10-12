@@ -29,6 +29,7 @@ namespace Odontology.Web
         {
             services.AddScoped(typeof(IRepository <> ), typeof(Repository <> ));
             services.AddScoped<IArticleService, ArticleService>();
+            services.AddScoped<IVisitService, VisitService>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
