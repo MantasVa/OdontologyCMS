@@ -2,5 +2,6 @@
 {
     public class VisitDto
     {
+        public int Id { get; set; }
     }
 }

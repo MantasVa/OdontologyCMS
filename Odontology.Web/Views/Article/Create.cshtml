@@ -1,11 +1,11 @@
-﻿@model ArticleCreateViewModel
+﻿@model EntityCreateViewModel<ArticleViewModel>
 @using Microsoft.AspNetCore.Identity
 @using Odontology.Domain.Models
 @using Odontology.Web.Infrastructure
 @inject UserManager<ApplicationUser> UserManager
 @{
     var createUpdateTitle = Model.ViewType == ViewTypeEnum.Create ? "parašyti Įrašą" : Model.ViewType == ViewTypeEnum.Edit ? "redaguoti Įrašą" : "";
-    ViewData["Title"] = createUpdateTitle;
+    ViewBag.Title = createUpdateTitle;
     Layout = "_Layout";
 }
 
@@ -19,29 +19,29 @@
                 string editorName = $"{user.Name} {user.Surname}";
                 if (Model.ViewType == ViewTypeEnum.Create)
                 {
-                    <input type="hidden" asp-for="Article.CreatedBy" value="@editorName" />
-                    <input type="hidden" asp-for="Article.CreatedOn" value="@DateTime.UtcNow" />
+                    <input type="hidden" asp-for="EntityViewModel.CreatedBy" value="@editorName" />
+                    <input type="hidden" asp-for="EntityViewModel.CreatedOn" value="@DateTime.UtcNow" />
                 }
                 else if (Model.ViewType == ViewTypeEnum.Edit)
                 {
-                    <input type="hidden" asp-for="Article.CreatedOn" />
-                    <input type="hidden" asp-for="Article.CreatedBy" />
-                    <input type="hidden" asp-for="Article.UpdatedBy" value="@editorName" />
-                    <input type="hidden" asp-for="Article.UpdatedOn" value="@DateTime.UtcNow" />
+                    <input type="hidden" asp-for="EntityViewModel.CreatedOn" />
+                    <input type="hidden" asp-for="EntityViewModel.CreatedBy" />
+                    <input type="hidden" asp-for="EntityViewModel.UpdatedBy" value="@editorName" />
+                    <input type="hidden" asp-for="EntityViewModel.UpdatedOn" value="@DateTime.UtcNow" />
                 }
             }
-            <input type="hidden" asp-for="Article.Id" />
+            <input type="hidden" asp-for="EntityViewModel.Id" />
 
             <div class="form-group">
-                <div><span asp-validation-for="Article.Title" class="text-danger"></span></div>
-                <label asp-for="Article.Title">Pavadinimas<span class="text-danger">*</span>:</label>
-                <input type="text" class="form-control" asp-for="Article.Title" required />
+                <div><span asp-validation-for="EntityViewModel.Title" class="text-danger"></span></div>
+                <label asp-for="EntityViewModel.Title">Pavadinimas<span class="text-danger">*</span>:</label>
+                <input type="text" class="form-control" asp-for="EntityViewModel.Title" required />
             </div>
 
             <div class="form-group">
-                <div><span asp-validation-for="Article.Body" class="text-danger"></span></div>
-                <label asp-for="Article.Body">Turinys<span class="text-danger">*</span>:</label>
-                <textarea asp-for="Article.Body" class="form-control"></textarea>
+                <div><span asp-validation-for="EntityViewModel.Body" class="text-danger"></span></div>
+                <label asp-for="EntityViewModel.Body">Turinys<span class="text-danger">*</span>:</label>
+                <textarea asp-for="EntityViewModel.Body" class="form-control"></textarea>
             </div>
 
             <div>

@@ -2,9 +2,9 @@
 
 namespace Odontology.Web.ViewModels
 {
-    public class ArticleCreateViewModel
+    public class EntityCreateViewModel<TViewModel> where TViewModel : class
     {
-        public ArticleViewModel Article { get; set; }
+        public TViewModel EntityViewModel { get; set; }
 
         public ViewTypeEnum ViewType { get; set; }
     }

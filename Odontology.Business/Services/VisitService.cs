@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Mapster;
 using Odontology.Business.DTO;
 using Odontology.Business.Interfaces;
 using Odontology.Domain.Models;
@@ -15,24 +17,45 @@ namespace Odontology.Business.Services
             this.visitRepository = visitRepository;
         }
 
-        public Task<VisitDto> GetByIdAsync(int id)
+        public async Task<VisitDto> GetByIdAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var visit = await visitRepository.GetByIdAsync(id);
+            return visit.Adapt<VisitDto>();
+        }
+
+        public IEnumerable<VisitDto> GetByPatientId(int patientId)
+        {
+            return visitRepository.GetAllQuery().Where(x => x.Patient.Id == patientId).Select(v =>
+                new VisitDto
+                {
+                    Id = v.Id
+                });
         }
 
         public IEnumerable<VisitDto> GetAll()
         {
-            throw new System.NotImplementedException();
+            return visitRepository.GetAllQuery().Select(v =>
+                new VisitDto
+                {
+                    Id = v.Id
+                });
         }
 
-        public void AddOrEdit(VisitDto article)
+        public void AddOrEdit(VisitDto visitDto)
         {
-            throw new System.NotImplementedException();
+            if (visitDto.Id == 0)
+            {
+                _ = visitRepository.Add(visitDto.Adapt<Visit>());
+            }
+            else
+            {
+                _ = visitRepository.UpdateAsync(visitDto.Adapt<Visit>());
+            }
         }
 
         public void Delete(int id)
         {
-            throw new System.NotImplementedException();
+            _ = visitRepository.DeleteAsync(id);
         }
     }
 }

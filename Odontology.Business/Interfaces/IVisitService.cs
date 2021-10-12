@@ -8,9 +8,11 @@ namespace Odontology.Business.Interfaces
     {
         Task<VisitDto> GetByIdAsync(int id);
 
+        IEnumerable<VisitDto> GetByPatientId(int userId);
+
         IEnumerable<VisitDto> GetAll();
 
-        void AddOrEdit(VisitDto article);
+        void AddOrEdit(VisitDto visitDto);
 
         void Delete(int id);
     }

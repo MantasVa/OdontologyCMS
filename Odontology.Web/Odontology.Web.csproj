@@ -9,6 +9,7 @@
   <ItemGroup>
     <Content Remove="Views\Authorization\Registration.cshtml" />
     <Content Remove="Views\Home\Error.cshtml" />
+    <Content Remove="Views\Visit\AdminList.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +33,7 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Authorization\Registration.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Home\Error.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Visit\AdminList.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,10 +48,15 @@
     <None Include="Areas\Identity\Pages\_ViewStart.cshtml" />
     <None Include="Views\Authorization\Registration.cshtml" />
     <None Include="Views\Home\Error.cshtml" />
+    <None Include="Views\Visit\AdminList.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Authorization\Registration.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Visit\AdminList.cshtml" />
   </ItemGroup>
 
 </Project>

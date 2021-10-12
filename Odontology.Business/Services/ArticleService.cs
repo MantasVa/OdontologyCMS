@@ -44,11 +44,11 @@ namespace Odontology.Business.Services
         {
             if (article.Id == 0)
             {
-                articleRepository.Add(article.Adapt<Article>());
+                _ = articleRepository.Add(article.Adapt<Article>());
             }
             else
             {
-                articleRepository.UpdateAsync(article.Adapt<Article>());
+                _ = articleRepository.UpdateAsync(article.Adapt<Article>());
             }
         }
 

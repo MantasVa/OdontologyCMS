@@ -34,9 +34,9 @@ namespace Odontology.Web.Controllers
             return View(article);
         }
 
-        public IActionResult Create() => View(new ArticleCreateViewModel
+        public IActionResult Create() => View(new EntityCreateViewModel<ArticleViewModel>
         {
-            Article = new ArticleViewModel(),
+            EntityViewModel = new ArticleViewModel(),
             ViewType = ViewTypeEnum.Create
         });
 
@@ -45,21 +45,21 @@ namespace Odontology.Web.Controllers
             var articleDto = await articleService.GetByIdAsync(id);
             var article = articleDto.Adapt<ArticleViewModel>();
 
-            return View(nameof(Create), new ArticleCreateViewModel
+            return View(nameof(Create), new EntityCreateViewModel<ArticleViewModel>
             {
-                Article = article,
+                EntityViewModel = article,
                 ViewType = ViewTypeEnum.Edit
             });
         }
 
         [HttpPost]
-        public IActionResult Create(ArticleCreateViewModel viewModel)
+        public IActionResult Create(EntityCreateViewModel<ArticleViewModel> viewModel)
         {
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
             }
-            articleService.AddOrEdit(viewModel.Article.Adapt<ArticleDto>());
+            articleService.AddOrEdit(viewModel.EntityViewModel.Adapt<ArticleDto>());
 
             return RedirectToAction(nameof(AdminList));
         }
