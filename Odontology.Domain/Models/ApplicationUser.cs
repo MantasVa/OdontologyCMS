@@ -21,6 +21,8 @@ namespace Odontology.Domain.Models
         public bool IsConfirmed { get; set; } = false;
 
         public ICollection<Visit> Visits { get; set; }
+        
+        public int? EmployeeId { get; set; }
 
         public Employee Employee { get; set; }
 

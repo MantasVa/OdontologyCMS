@@ -1,4 +1,5 @@
-﻿using Odontology.Web.Infrastructure;
+﻿using Odontology.Business.Infrastructure.Enums;
+using Odontology.Web.Infrastructure;
 
 namespace Odontology.Web.ViewModels
 {
@@ -6,6 +7,6 @@ namespace Odontology.Web.ViewModels
     {
         public TViewModel EntityViewModel { get; set; }
 
-        public ViewTypeEnum ViewType { get; set; }
+        public ActionTypeEnum ActionType { get; set; }
     }
 }

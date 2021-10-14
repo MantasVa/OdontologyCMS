@@ -1,4 +1,4 @@
-﻿@model System.Collections.Generic.IEnumerable<VisitViewModel>
+﻿@model IEnumerable<VisitViewModel>
 
 @{
     ViewBag.Title = "naudotojų vizitai";
@@ -6,3 +6,66 @@
 }
 
 <h2>Naudotojų Vizitai</h2>
+
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid">
+            <div class="card mb-4 mt-5">
+                <div class="card-header"><i class="fas fa-table mr-1"></i>Naujienų sąrašas</div>
+
+                <div class="card-body">
+                    <a class="btn btn-outline-primary text-black-50" asp-action="Create"> Kurti Naujieną </a>
+                    <div class="table-responsive">
+                        <table class="table" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Vizito Laikas</th>
+                                    <th>Pacientas</th>
+                                    <th>Daktaras</th>
+                                    <th>Pridėtas</th>
+                                    <th>Daugiau</th>
+                                    <th>Redaguoti</th>
+                                    <th>Ištrinti</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Vizito Laikas</th>
+                                    <th>Pacientas</th>
+                                    <th>Daktaras</th>
+                                    <th>Pridėtas</th>
+                                    <th>Daugiau</th>
+                                    <th>Redaguoti</th>
+                                    <th>Ištrinti</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                @foreach (var visit in Model)
+                                {
+                                <tr> 
+                                    <td>@visit.DateTime</td>
+                                    <td>@visit.Patient.Fullname</td>
+                                    <td>@visit.Doctor.Fullname</td>
+                                    <td>@visit.CreatedOn</td>
+                                    <td>
+                                        <a class="btn btn-outline-primary text-black-50" asp-action="Details" asp-route-id="@visit.Id"> Daugiau </a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-outline-primary text-black-50" asp-action="Edit" asp-route-id="@visit.Id">Redaguoti</a>
+                                    </td>
+                                    <td>
+                                        <form method="post" asp-action="Delete" asp-route-id="@visit.Id">
+                                            <input type="submit" class="btn btn-outline-primary text-black-50"
+                                                   value="Naikinti" />
+                                        </form>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

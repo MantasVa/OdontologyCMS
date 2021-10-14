@@ -1,13 +1,10 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using Odontology.Domain.Models
-@using Odontology.Web.Controllers
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+﻿@using Odontology.Web.Controllers
+@inject SignInManager<ApplicationUser> signInManager
 
-@if (SignInManager.IsSignedIn(User))
+@if (signInManager.IsSignedIn(User))
 {
     <li>
-        <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Sveiki, @UserManager.GetUserAsync(User).Result.Name!</a>
+        <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Sveiki, @userManager.GetUserAsync(User).Result.Name!</a>
     </li>
     <li>
         <form class="form-inline" asp-action="Logout" asp-controller="Authorization" asp-route-returnUrl="@Url.Action(nameof(HomeController.Index), "Home")">

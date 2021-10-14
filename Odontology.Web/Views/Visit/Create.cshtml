@@ -1,8 +1,52 @@
-﻿@model Odontology.Web.ViewModels.EntityCreateViewModel<VisitViewModel>
-
+﻿@using Odontology.Business.Infrastructure.Enums
+@model VisitCreateViewModel
 @{
-    ViewBag.Title = "pridėti vizitą";
+    var createUpdateTitle = Model.ActionType == ActionTypeEnum.Create ? "Pridėti vizitą" : Model.ActionType == ActionTypeEnum.Edit ? "Redaguoti vizitą" : "";
+    ViewBag.Title = "Vizitas";
     Layout = "_Layout";
 }
 
 
+<div class="container">
+    <div style="margin:10px">
+        <h1 class="mt-4">@createUpdateTitle</h1>
+
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            @{
+                var user = await userManager.GetUserAsync(User);
+                string editorName = $"{user.Name} {user.Surname}";
+                if (Model.ActionType == ActionTypeEnum.Create)
+                {
+                    <input type="hidden" asp-for="EntityViewModel.CreatedBy" value="@editorName" />
+                    <input type="hidden" asp-for="EntityViewModel.CreatedOn" value="@DateTime.UtcNow" />
+                }
+                else if (Model.ActionType == ActionTypeEnum.Edit)
+                {
+                    <input type="hidden" asp-for="EntityViewModel.CreatedOn" />
+                    <input type="hidden" asp-for="EntityViewModel.CreatedBy" />
+                    <input type="hidden" asp-for="EntityViewModel.UpdatedBy" value="@editorName" />
+                    <input type="hidden" asp-for="EntityViewModel.UpdatedOn" value="@DateTime.UtcNow" />
+                }
+            }
+            <input type="hidden" asp-for="EntityViewModel.Id" />
+
+            <div class="form-group">
+                <div><span asp-validation-for="EntityViewModel.DateTime" class="text-danger"></span></div>
+                <label asp-for="EntityViewModel.DateTime">Vizito laikas<span class="text-danger">*</span>:</label>
+                <input type="datetime" class="form-control" asp-for="EntityViewModel.DateTime" required />
+            </div>
+            
+            <div class="form-group">
+                <div><span asp-validation-for="EmployeeId" class="text-danger"></span></div>
+                <label asp-for="EmployeeId" class="small mb-1">Daktaras<span class="text-danger">*</span></label>
+                <select asp-for="EmployeeId" asp-items="Model.EmployeesSelectEnumerable" class="form-control">
+                    <option selected="selected">Pasirinkti</option>
+                </select>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-success">Sukurti</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,7 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using Odontology.Domain.Models
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+﻿@inject SignInManager<ApplicationUser> signInManager
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +19,7 @@
                     <li class="nav-item">
                         <a asp-controller="Home" asp-action="Index" class="nav-link">Pradinis</a>
                     </li>
-                    @if (SignInManager.IsSignedIn(User))
+                    @if (signInManager.IsSignedIn(User))
                     {
                         <li class="nav-item">
                             <a asp-action="AdminList" asp-controller="Article" class="nav-link">Naujienos</a>

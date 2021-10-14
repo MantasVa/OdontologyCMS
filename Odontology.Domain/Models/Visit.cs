@@ -6,8 +6,12 @@ namespace Odontology.Domain.Models
     {
         public DateTime DateTime { get; set; }
 
+        public int PatientId { get; set; }
+
         public ApplicationUser Patient { get; set; }
 
-        public Employee Doctor { get; set; }
+        public int EmployeeId { get; set; }
+
+        public Employee Employee { get; set; }
     }
 }

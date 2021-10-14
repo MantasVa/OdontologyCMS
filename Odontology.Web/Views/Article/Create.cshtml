@@ -1,10 +1,7 @@
-﻿@model EntityCreateViewModel<ArticleViewModel>
-@using Microsoft.AspNetCore.Identity
-@using Odontology.Domain.Models
-@using Odontology.Web.Infrastructure
-@inject UserManager<ApplicationUser> UserManager
+﻿@using Odontology.Business.Infrastructure.Enums
+@model EntityCreateViewModel<ArticleViewModel>
 @{
-    var createUpdateTitle = Model.ViewType == ViewTypeEnum.Create ? "parašyti Įrašą" : Model.ViewType == ViewTypeEnum.Edit ? "redaguoti Įrašą" : "";
+    var createUpdateTitle = Model.ActionType == ActionTypeEnum.Create ? "parašyti Įrašą" : Model.ActionType == ActionTypeEnum.Edit ? "redaguoti Įrašą" : "";
     ViewBag.Title = createUpdateTitle;
     Layout = "_Layout";
 }
@@ -15,14 +12,14 @@
 
         <form asp-action="Create" method="post" enctype="multipart/form-data">
             @{
-                var user = await UserManager.GetUserAsync(User);
+                var user = await userManager.GetUserAsync(User);
                 string editorName = $"{user.Name} {user.Surname}";
-                if (Model.ViewType == ViewTypeEnum.Create)
+                if (Model.ActionType == ActionTypeEnum.Create)
                 {
                     <input type="hidden" asp-for="EntityViewModel.CreatedBy" value="@editorName" />
                     <input type="hidden" asp-for="EntityViewModel.CreatedOn" value="@DateTime.UtcNow" />
                 }
-                else if (Model.ViewType == ViewTypeEnum.Edit)
+                else if (Model.ActionType == ActionTypeEnum.Edit)
                 {
                     <input type="hidden" asp-for="EntityViewModel.CreatedOn" />
                     <input type="hidden" asp-for="EntityViewModel.CreatedBy" />

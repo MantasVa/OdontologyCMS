@@ -59,4 +59,8 @@
     <UpToDateCheckInput Remove="Views\Visit\AdminList.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Infrastructure\Enums\" />
+  </ItemGroup>
+
 </Project>

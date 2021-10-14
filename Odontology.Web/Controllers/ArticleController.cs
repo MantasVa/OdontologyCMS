@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Odontology.Business.DTO;
+using Odontology.Business.Infrastructure.Enums;
 using Odontology.Business.Interfaces;
 using Odontology.Web.Infrastructure;
 using Odontology.Web.ViewModels;
@@ -37,7 +38,7 @@ namespace Odontology.Web.Controllers
         public IActionResult Create() => View(new EntityCreateViewModel<ArticleViewModel>
         {
             EntityViewModel = new ArticleViewModel(),
-            ViewType = ViewTypeEnum.Create
+            ActionType = ActionTypeEnum.Create
         });
 
         public async Task<IActionResult> Edit(int id)
@@ -48,7 +49,7 @@ namespace Odontology.Web.Controllers
             return View(nameof(Create), new EntityCreateViewModel<ArticleViewModel>
             {
                 EntityViewModel = article,
-                ViewType = ViewTypeEnum.Edit
+                ActionType = ActionTypeEnum.Edit
             });
         }
 

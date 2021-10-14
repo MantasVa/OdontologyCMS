@@ -5,9 +5,11 @@ using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Odontology.Business.DTO;
+using Odontology.Business.Infrastructure.Enums;
 using Odontology.Business.Interfaces;
 using Odontology.Domain.Models;
 using Odontology.Web.Infrastructure;
+using Odontology.Web.Infrastructure.Extensions;
 using Odontology.Web.ViewModels;
 
 namespace Odontology.Web.Controllers
@@ -16,11 +18,16 @@ namespace Odontology.Web.Controllers
     public class VisitController : Controller
     {
         private readonly IVisitService visitService;
+        private readonly IEmployeeService employeeService;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public VisitController(IVisitService visitService)
+        public VisitController(IVisitService visitService,
+                               IEmployeeService employeeService,
+                               UserManager<ApplicationUser> userManager)
         {
             this.visitService = visitService;
+            this.employeeService = employeeService;
+            this.userManager = userManager;
         }
 
         public IActionResult AdminList()
@@ -51,10 +58,11 @@ namespace Odontology.Web.Controllers
             return View(visit);
         }
 
-        public IActionResult Create() => View(new EntityCreateViewModel<VisitViewModel>
+        public IActionResult Create() => View(new VisitCreateViewModel
         {
             EntityViewModel = new VisitViewModel(),
-            ViewType = ViewTypeEnum.Create
+            ActionType = ActionTypeEnum.Create,
+            EmployeesSelectEnumerable = employeeService.GetAll().ToSelectListItemsEnumerable()
         });
 
         public async Task<IActionResult> Edit(int id)
@@ -62,21 +70,25 @@ namespace Odontology.Web.Controllers
             var visitDto = await visitService.GetByIdAsync(id);
             var visit = visitDto.Adapt<VisitViewModel>();
 
-            return View(nameof(Create),new EntityCreateViewModel<VisitViewModel>
+            return View(nameof(Create),new VisitCreateViewModel
             {
                 EntityViewModel = visit,
-                ViewType = ViewTypeEnum.Edit
+                ActionType = ActionTypeEnum.Edit,
+                EmployeesSelectEnumerable = employeeService.GetAll().ToSelectListItemsEnumerable()
             });
         }
 
         [HttpPost]
-        public IActionResult Create(EntityCreateViewModel<VisitViewModel> viewModel)
+        public IActionResult Create(VisitCreateViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
             }
-            visitService.AddOrEdit(viewModel.EntityViewModel.Adapt<VisitDto>());
+
+            var userIdString = userManager.GetUserId(User);
+            var visitDto = viewModel.ToVisitCreateDto(userIdString);
+            visitService.AddOrEdit(visitDto);
 
             return RedirectToAction(nameof(AdminList));
         }

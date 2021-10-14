@@ -12,7 +12,7 @@ namespace Odontology.Business.Interfaces
 
         IEnumerable<VisitDto> GetAll();
 
-        void AddOrEdit(VisitDto visitDto);
+        void AddOrEdit(VisitCreateDto visitDto);
 
         void Delete(int id);
     }

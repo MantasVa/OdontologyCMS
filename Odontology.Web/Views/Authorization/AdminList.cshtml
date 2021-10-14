@@ -1,28 +1,24 @@
-﻿@model IEnumerable<VisitViewModel>
+﻿@model IEnumerable<UserViewModel>
 @{
-    ViewBag.Title = "vizitai";
+    ViewBag.Title = "naudotojai";
     Layout = "_Layout";
 }
-
-
-
-<h2>Jūsų Vizitai</h2>
 
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid">
             <div class="card mb-4 mt-5">
-                <div class="card-header"><i class="fas fa-table mr-1"></i>Naujienų sąrašas</div>
+                <div class="card-header"><i class="fas fa-table mr-1"></i>Naudotojai</div>
 
                 <div class="card-body">
-                    <a class="btn btn-outline-primary text-black-50" asp-action="Create"> Kurti Naujieną </a>
+                    <a class="btn btn-outline-primary text-black-50" asp-action="Create"> Kurti Naudotoją </a>
                     <div class="table-responsive">
                         <table class="table" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th>Vizito Laikas</th>
-                                    <th>Daktaras</th>
-                                    <th>Pridėtas</th>
+                                    <th>Vardas</th>
+                                    <th>Email</th>
+                                    <th>Sukurtas</th>
                                     <th>Daugiau</th>
                                     <th>Redaguoti</th>
                                     <th>Ištrinti</th>
@@ -30,29 +26,29 @@
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>Vizito Laikas</th>
-                                    <th>Daktaras</th>
-                                    <th>Pridėtas</th>
+                                    <th>Vardas</th>
+                                    <th>Email</th>
+                                    <th>Sukurtas</th>
                                     <th>Daugiau</th>
                                     <th>Redaguoti</th>
                                     <th>Ištrinti</th>
                                 </tr>
                             </tfoot>
                             <tbody>
-                                @foreach (var visit in Model)
+                                @foreach (var user in Model)
                                 {
                                     <tr>
-                                        <td>@visit.DateTime</td>
-                                        <td>@visit.Doctor.Fullname</td>
-                                        <td>@visit.CreatedOn</td>
+                                        <td>@user.Name @user.Surname</td>
+                                        <td>@user.Email</td>
+                                        <td>@user.CreatedOn</td>
                                         <td>
-                                            <a class="btn btn-outline-primary text-black-50" asp-action="Details" asp-route-id="@visit.Id"> Daugiau </a>
+                                            <a class="btn btn-outline-primary text-black-50" asp-action="Details" asp-route-id="@user.Id"> Daugiau </a>
                                         </td>
                                         <td>
-                                            <a class="btn btn-outline-primary text-black-50" asp-action="Edit" asp-route-id="@visit.Id">Redaguoti</a>
+                                            <a class="btn btn-outline-primary text-black-50" asp-action="Edit" asp-route-id="@user.Id">Redaguoti</a>
                                         </td>
                                         <td>
-                                            <form method="post" asp-action="Delete" asp-route-id="@visit.Id">
+                                            <form method="post" asp-action="Delete" asp-route-id="@user.Id">
                                                 <input type="submit" class="btn btn-outline-primary text-black-50"
                                                        value="Naikinti" />
                                             </form>
