@@ -1,5 +1,4 @@
-﻿@using Odontology.Business.Infrastructure.Enums
-@model VisitCreateViewModel
+﻿@model VisitCreateViewModel
 @{
     var createUpdateTitle = Model.ActionType == ActionTypeEnum.Create ? "Pridėti vizitą" : Model.ActionType == ActionTypeEnum.Edit ? "Redaguoti vizitą" : "";
     ViewBag.Title = "Vizitas";
@@ -11,7 +10,7 @@
     <div style="margin:10px">
         <h1 class="mt-4">@createUpdateTitle</h1>
 
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <form asp-action="Create" method="post">
             @{
                 var user = await userManager.GetUserAsync(User);
                 string editorName = $"{user.Name} {user.Surname}";

@@ -9,26 +9,24 @@ namespace Odontology.Persistance.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
-        protected readonly ApplicationDbContext applicationDbContext;
-        protected DbSet<TEntity> entities;
+        protected readonly ApplicationDbContext ApplicationDbContext;
+        protected DbSet<TEntity> Entities;
 
         public Repository(ApplicationDbContext applicationDbContext)
         {
-            this.applicationDbContext = applicationDbContext;
-            entities = applicationDbContext.Set<TEntity>();
+            ApplicationDbContext = applicationDbContext;
+            Entities = applicationDbContext.Set<TEntity>();
         }
+        public IQueryable<TEntity> GetAllQuery() => Query().AsNoTracking();
 
         public async Task<TEntity> GetByIdAsync(int id) 
             => await Query().Where(e => e.Id == id).AsNoTracking().FirstOrDefaultAsync();
 
-
-        public IQueryable<TEntity> GetAllQuery() => Query().AsNoTracking();
-
         public TEntity Add(TEntity entity)
         {
             if(entity == null) throw new ArgumentNullException("Entity is null");
-            entities.Add(entity);
-            applicationDbContext.SaveChanges();
+            Entities.Add(entity);
+            ApplicationDbContext.SaveChanges();
             return entity;
         }
 
@@ -37,8 +35,8 @@ namespace Odontology.Persistance.Repositories
             if(entity == null) throw new ArgumentNullException("Entity is null");
             TEntity dbEntry = GetById(entity.Id);
             if (dbEntry == null) return entity;
-            applicationDbContext.Entry(dbEntry).CurrentValues.SetValues(entity);
-            applicationDbContext.SaveChanges();
+            ApplicationDbContext.Entry(dbEntry).CurrentValues.SetValues(entity);
+            ApplicationDbContext.SaveChanges();
             return entity;
         }
 
@@ -46,15 +44,15 @@ namespace Odontology.Persistance.Repositories
         {
             TEntity dbEntry = GetById(id);
             if (dbEntry == null) return dbEntry;
-            entities.Remove(dbEntry);
-            applicationDbContext.SaveChanges();
+            Entities.Remove(dbEntry);
+            ApplicationDbContext.SaveChanges();
             return dbEntry;
         }
 
         protected IQueryable<TEntity> Query()
         {
-            var query = entities.AsQueryable();
-            foreach (var property in applicationDbContext.Model.FindEntityType(typeof(TEntity)).GetNavigations())
+            var query = Entities.AsQueryable();
+            foreach (var property in ApplicationDbContext.Model.FindEntityType(typeof(TEntity)).GetNavigations())
             {
                 query = query.Include(property.Name);
             }

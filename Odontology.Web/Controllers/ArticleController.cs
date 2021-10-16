@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Odontology.Business.DTO;
 using Odontology.Business.Infrastructure.Enums;
 using Odontology.Business.Interfaces;
-using Odontology.Web.Infrastructure;
 using Odontology.Web.ViewModels;
 
 namespace Odontology.Web.Controllers

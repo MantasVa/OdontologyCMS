@@ -10,8 +10,8 @@ namespace Odontology.Business.Interfaces
 
         Task<UserDto> GetByIdAsync(int id);
 
-        void AddOrEdit(UserCreateDto userCreateDto);
+        void Edit(UserCreateDto userCreateDto);
 
-        void Delete(int id);
+        Task Delete(int id);
     }
 }

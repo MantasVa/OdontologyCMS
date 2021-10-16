@@ -25,6 +25,16 @@ namespace Odontology.Web.Infrastructure.Extensions
             return viewModel.Adapt<VisitCreateDto>(mapConfig);
         }
 
+        public static UserCreateDto ToUserCreateDto(this EntityCreateViewModel<RegistrationViewModel> viewModel)
+        {
+            var mapConfig = TypeAdapterConfig<EntityCreateViewModel<RegistrationViewModel>, UserCreateDto>
+                .NewConfig()
+                .Map(dest => dest.User,
+                    src => src.EntityViewModel).Config;
+
+            return viewModel.Adapt<UserCreateDto>(mapConfig);
+        }
+
         public static ApplicationUser ToApplicationUser(this RegistrationViewModel viewModel)
         {
             var mapConfig = TypeAdapterConfig<RegistrationViewModel, ApplicationUser>

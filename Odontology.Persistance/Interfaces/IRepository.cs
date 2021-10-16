@@ -5,9 +5,9 @@ namespace Odontology.Persistance.Interfaces
 {
     public interface IRepository<T> where T : class
     {
-        Task<T> GetByIdAsync(int id);
-
         IQueryable<T> GetAllQuery();
+
+        Task<T> GetByIdAsync(int id);
 
         T Add(T entity);
 

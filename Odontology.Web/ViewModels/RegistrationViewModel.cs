@@ -5,6 +5,8 @@ namespace Odontology.Web.ViewModels
 {
     public class RegistrationViewModel
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Neįvestas Vardas")]
         public string Name { get; set; }
 
@@ -26,5 +28,11 @@ namespace Odontology.Web.ViewModels
         public string ConfirmPassword { get; set; }
 
         public DateTime CreatedOn { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public DateTime UpdatedOn { get; set; }
+
+        public string UpdatedBy { get; set; }
     }
 }

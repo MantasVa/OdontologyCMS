@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using Mapster;
 using Odontology.Business.DTO;
@@ -13,10 +14,12 @@ namespace Odontology.Business.Services
     public class UserService : IUserService
     {
         private readonly IRepository<ApplicationUser> userRepository;
+        private readonly IRepository<Employee> employeeRepository;
 
-        public UserService(IRepository<ApplicationUser> userRepository)
+        public UserService(IRepository<ApplicationUser> userRepository, IRepository<Employee> employeeRepository)
         {
             this.userRepository = userRepository;
+            this.employeeRepository = employeeRepository;
         }
 
         public IEnumerable<UserDto> GetAll() 
@@ -24,11 +27,11 @@ namespace Odontology.Business.Services
 
         public async Task<UserDto> GetByIdAsync(int id)
         {
-            var visit = await userRepository.GetByIdAsync(id);
-            return visit.Adapt<UserDto>();
+            var user = await userRepository.GetByIdAsync(id);
+            return user.Adapt<UserDto>();
         }
 
-        public void AddOrEdit(UserCreateDto userCreateDto)
+        public void Edit(UserCreateDto userCreateDto)
         {
             if (userCreateDto == null)
                 throw new ArgumentNullException(nameof(userCreateDto));
@@ -37,20 +40,21 @@ namespace Odontology.Business.Services
 
             switch (userCreateDto.ActionType)
             {
-                case ActionTypeEnum.Create:
-                    userRepository.Add(user);
-                    break;
                 case ActionTypeEnum.Edit:
                     userRepository.UpdateAsync(user);
                     break;
                 default:
                     throw new ArgumentException("Action type is not valid", nameof(userCreateDto));
-
             }
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
+            var user = await userRepository.GetByIdAsync(id);
+            if (user.EmployeeId > 0)
+            {
+                _ = employeeRepository.DeleteAsync((int)user.EmployeeId);
+            }
             _ = userRepository.DeleteAsync(id);
         }
     }

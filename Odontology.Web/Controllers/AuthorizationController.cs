@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Odontology.Business.DTO;
 using Odontology.Business.Infrastructure.Enums;
 using Odontology.Business.Interfaces;
 using Odontology.Domain.Models;
@@ -84,18 +87,18 @@ namespace Odontology.Web.Controllers
             return View();
         }
 
-        public IActionResult Create() => View(new EntityCreateViewModel<UserViewModel>
+        public IActionResult Create() => View(new EntityCreateViewModel<RegistrationViewModel>
                                               {
-                                                  EntityViewModel = new UserViewModel(),
+                                                  EntityViewModel = new RegistrationViewModel(),
                                                   ActionType = ActionTypeEnum.Create
                                               });
 
         public async Task<IActionResult> Edit(int userId)
         {
             var userDto = await userService.GetByIdAsync(userId);
-            var createViewModel = new EntityCreateViewModel<UserViewModel>
+            var createViewModel = new EntityCreateViewModel<RegistrationViewModel>
             {
-                EntityViewModel = userDto.Adapt<UserViewModel>(),
+                EntityViewModel = userDto.Adapt<RegistrationViewModel>(),
                 ActionType = ActionTypeEnum.Edit
             };
 
@@ -103,14 +106,28 @@ namespace Odontology.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(EntityCreateViewModel<UserViewModel> viewModel)
+        public async Task<IActionResult> Create(EntityCreateViewModel<RegistrationViewModel> viewModel)
         {
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
             }
 
-            throw new NotImplementedException();
+            if (viewModel.ActionType == ActionTypeEnum.Create)
+            {
+                var createResult = await userManager.CreateAsync(viewModel.EntityViewModel.ToApplicationUser(), viewModel.EntityViewModel.Password);
+
+                if (!createResult.Succeeded && createResult.Errors.Any())
+                {
+                    var error = createResult.Errors.First();
+                    ModelState.AddModelError(error.Code, error.Description);
+                    return View(viewModel);
+                }
+            }
+            else
+            {
+                userService.Edit(viewModel.ToUserCreateDto());
+            }
 
             return RedirectToAction(nameof(AdminList));
         }

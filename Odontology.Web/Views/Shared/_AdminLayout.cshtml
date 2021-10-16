@@ -17,24 +17,22 @@
             <div class="collapse navbar-collapse justify-content-md-between" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a asp-controller="Home" asp-action="Index" class="nav-link">Pradinis</a>
+                        <a asp-controller="Article" asp-action="AdminList" class="nav-link">Naujienos</a>
                     </li>
-                    @if (signInManager.IsSignedIn(User))
-                    {
-                        <li class="nav-item">
-                            <a asp-action="AdminList" asp-controller="Article" class="nav-link">Naujienos</a>
-                        </li>
-
-                    }
                     <li class="nav-item">
-                        <a asp-controller="Home" asp-action="AboutUs" class="nav-link">Apie Mus</a>
+                        <a asp-controller="Authorization" asp-action="AdminList" class="nav-link">Naudotojai</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-action="Users" class="nav-link">Daktarai</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Visit" asp-action="AdminList" class="nav-link">Vizitai</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
                     <li>
-                        <a asp-controller="Admin" asp-action="Index" class="nav-link">Admin Panelė</a>
+                        <a asp-controller="Home" asp-action="Index" class="nav-link">Grįžti į pagrindinį</a>
                     </li>
-                    <partial name="_LoginPartial"/>
                 </ul>
             </div>
         </nav>

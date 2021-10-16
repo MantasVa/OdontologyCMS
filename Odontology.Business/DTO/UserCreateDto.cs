@@ -8,5 +8,6 @@ namespace Odontology.Business.DTO
 
         public ActionTypeEnum ActionType { get; set; }
 
+
     }
 }
