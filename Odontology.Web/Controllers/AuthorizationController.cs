@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Odontology.Business.DTO;
 using Odontology.Business.Infrastructure.Enums;
 using Odontology.Business.Interfaces;
+using Odontology.Common;
+using Odontology.Common.Enums;
 using Odontology.Domain.Models;
 using Odontology.Web.Infrastructure.Extensions;
 using Odontology.Web.ViewModels;
@@ -42,7 +40,14 @@ namespace Odontology.Web.Controllers
                 return View(viewModel);
             }
 
-            _ = await userManager.CreateAsync(viewModel.ToApplicationUser(), viewModel.Password);
+            var createResult = await AddApplicationUserAsync(viewModel);
+            if (!createResult.Succeeded && createResult.Errors.Any())
+            {
+                var error = createResult.Errors.First();
+                ModelState.AddModelError(error.Code, error.Description);
+                return View(viewModel);
+            }
+
 
             return RedirectToAction(nameof(Login));
         }
@@ -115,8 +120,8 @@ namespace Odontology.Web.Controllers
 
             if (viewModel.ActionType == ActionTypeEnum.Create)
             {
-                var createResult = await userManager.CreateAsync(viewModel.EntityViewModel.ToApplicationUser(), viewModel.EntityViewModel.Password);
-
+                var createResult = await AddApplicationUserAsync(viewModel.EntityViewModel.ToApplicationUser(),
+                    viewModel.EntityViewModel.Password);
                 if (!createResult.Succeeded && createResult.Errors.Any())
                 {
                     var error = createResult.Errors.First();
@@ -138,6 +143,18 @@ namespace Odontology.Web.Controllers
             userService.Delete(id);
 
             return RedirectToAction(nameof(AdminList));
+        }
+
+        private async Task<IdentityResult> AddApplicationUserAsync(ApplicationUser user, string password)
+        {
+            var createResult = await userManager.CreateAsync(user, password);
+            if (createResult.Succeeded)
+            {
+                _ = await userManager.AddToRoleAsync(await userManager.FindByEmailAsync(user.Email),
+                    Role.User.ToDisplayName());
+            }
+            
+            return createResult;
         }
     }
 }

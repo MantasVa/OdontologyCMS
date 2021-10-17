@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odontology.Persistance", "O
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odontology.Domain", "Odontology.Domain\Odontology.Domain.csproj", "{EAE0B250-6FA3-41BE-8DD7-FE58C494758D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odontology.Common", "Odontology.Common\Odontology.Common.csproj", "{07B285D7-2269-43F5-BAA5-3BC52B9A9D36}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{EAE0B250-6FA3-41BE-8DD7-FE58C494758D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAE0B250-6FA3-41BE-8DD7-FE58C494758D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAE0B250-6FA3-41BE-8DD7-FE58C494758D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07B285D7-2269-43F5-BAA5-3BC52B9A9D36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07B285D7-2269-43F5-BAA5-3BC52B9A9D36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07B285D7-2269-43F5-BAA5-3BC52B9A9D36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07B285D7-2269-43F5-BAA5-3BC52B9A9D36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

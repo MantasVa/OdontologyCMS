@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Odontology.Common\Odontology.Common.csproj" />
     <ProjectReference Include="..\Odontology.Domain\Odontology.Domain.csproj" />
   </ItemGroup>
 

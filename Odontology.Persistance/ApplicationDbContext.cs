@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Odontology.Domain.Models;
+using Odontology.Persistance.Infrastructure;
 
 namespace Odontology.Persistance
 {
@@ -19,6 +20,13 @@ namespace Odontology.Persistance
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.SeedData();
+            base.OnModelCreating(modelBuilder);
+
         }
     }
 }
