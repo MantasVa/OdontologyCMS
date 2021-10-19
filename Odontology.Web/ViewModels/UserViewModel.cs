@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Odontology.Web.ViewModels
 {
@@ -11,6 +12,8 @@ namespace Odontology.Web.ViewModels
         public string Surname { get; set; }
 
         public string Email { get; set; }
+
+        public IEnumerable<string> Roles { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

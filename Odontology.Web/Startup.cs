@@ -27,11 +27,13 @@ namespace Odontology.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped(typeof(IRepository <> ), typeof(Repository <> ));
             services.AddScoped<IArticleService, ArticleService>();
             services.AddScoped<IVisitService, VisitService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

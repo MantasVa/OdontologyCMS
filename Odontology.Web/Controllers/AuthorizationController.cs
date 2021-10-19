@@ -20,17 +20,23 @@ namespace Odontology.Web.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IUserService userService;
+        private readonly IRoleService roleService;
+        private readonly IEmployeeService employeeService;
 
         public AuthorizationController(UserManager<ApplicationUser> userManager,
                                        SignInManager<ApplicationUser> signInManager,
-                                       IUserService userService)
+                                       IUserService userService,
+                                       IRoleService roleService,
+                                       IEmployeeService employeeService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.userService = userService;
+            this.roleService = roleService;
+            this.employeeService = employeeService;
         }
 
-        public IActionResult Registration() => View();
+        public IActionResult Registration() => View(new RegistrationViewModel());
         
         [HttpPost]
         public async Task<IActionResult> Registration(RegistrationViewModel viewModel)
@@ -40,14 +46,13 @@ namespace Odontology.Web.Controllers
                 return View(viewModel);
             }
 
-            var createResult = await AddApplicationUserAsync(viewModel);
+            var createResult = await userService.AddUserAsync(viewModel.ToApplicationUser(), viewModel.Password, new []{Role.User.ToDisplayName()});
             if (!createResult.Succeeded && createResult.Errors.Any())
             {
                 var error = createResult.Errors.First();
                 ModelState.AddModelError(error.Code, error.Description);
                 return View(viewModel);
             }
-
 
             return RedirectToAction(nameof(Login));
         }
@@ -87,74 +92,65 @@ namespace Odontology.Web.Controllers
             return View(usersListViewModel);
         }
 
-        public IActionResult Details()
-        {
-            return View();
-        }
-
-        public IActionResult Create() => View(new EntityCreateViewModel<RegistrationViewModel>
+        public IActionResult Create() => View(new UserCreateViewModel
                                               {
                                                   EntityViewModel = new RegistrationViewModel(),
-                                                  ActionType = ActionTypeEnum.Create
+                                                  ActionType = ActionTypeEnum.Create,
+                                                  Roles = roleService.GetAll().ToSelectListItemsEnumerable()
                                               });
 
-        public async Task<IActionResult> Edit(int userId)
-        {
-            var userDto = await userService.GetByIdAsync(userId);
-            var createViewModel = new EntityCreateViewModel<RegistrationViewModel>
-            {
-                EntityViewModel = userDto.Adapt<RegistrationViewModel>(),
-                ActionType = ActionTypeEnum.Edit
-            };
-
-            return View(createViewModel);
-        }
-
         [HttpPost]
-        public async Task<IActionResult> Create(EntityCreateViewModel<RegistrationViewModel> viewModel)
+        public async Task<IActionResult> Create(UserCreateViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
             }
 
-            if (viewModel.ActionType == ActionTypeEnum.Create)
+            var registrationViewModel = viewModel.EntityViewModel;
+            var createResult = await userService.AddUserAsync(registrationViewModel.ToApplicationUser(), registrationViewModel.Password, viewModel.RoleNames);
+            if (!createResult.Succeeded && createResult.Errors.Any())
             {
-                var createResult = await AddApplicationUserAsync(viewModel.EntityViewModel.ToApplicationUser(),
-                    viewModel.EntityViewModel.Password);
-                if (!createResult.Succeeded && createResult.Errors.Any())
-                {
-                    var error = createResult.Errors.First();
-                    ModelState.AddModelError(error.Code, error.Description);
-                    return View(viewModel);
-                }
+                var error = createResult.Errors.First();
+                ModelState.AddModelError(error.Code, error.Description);    
+                return View(viewModel);
+            }
+
+            return RedirectToAction(nameof(AdminList));
+        }
+
+        public IActionResult EditRoles(int id) => View(new ChangeRolesViewModel
+        {
+            UserId = id.ToString(),
+            Roles = roleService.GetAll().ToSelectListItemsEnumerable()
+        });
+
+        [HttpPost]
+        public async Task<IActionResult> EditRoles(ChangeRolesViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            var addRoles = await userService.UpdateUserRolesAsync(viewModel.UserId, viewModel.RoleNames);
+            if (addRoles.Succeeded)
+            {
+                return RedirectToAction(nameof(AdminList));
             }
             else
             {
-                userService.Edit(viewModel.ToUserCreateDto());
+                var error = addRoles.Errors.First();
+                ModelState.AddModelError(error.Code, error.Description);    
+                return View(viewModel);
             }
-
-            return RedirectToAction(nameof(AdminList));
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            userService.Delete(id);
-
+            await userService.DeleteAsync(id);
             return RedirectToAction(nameof(AdminList));
-        }
-
-        private async Task<IdentityResult> AddApplicationUserAsync(ApplicationUser user, string password)
-        {
-            var createResult = await userManager.CreateAsync(user, password);
-            if (createResult.Succeeded)
-            {
-                _ = await userManager.AddToRoleAsync(await userManager.FindByEmailAsync(user.Email),
-                    Role.User.ToDisplayName());
-            }
-            
-            return createResult;
         }
     }
 }

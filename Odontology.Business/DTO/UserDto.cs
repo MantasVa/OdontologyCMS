@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Odontology.Business.DTO
 {
@@ -12,11 +13,13 @@ namespace Odontology.Business.DTO
 
         public string Email { get; set; }
 
+        public IEnumerable<string> Roles { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public string CreatedBy { get; set; }
 
-        public DateTime UpdatedOn { get; set; }
+        public DateTime? UpdatedOn { get; set; }
 
         public string UpdatedBy { get; set; }
     }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Odontology.Persistance;
 
 namespace Odontology.Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211019052840_AddedUserRoleEntity")]
+    partial class AddedUserRoleEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,11 +96,17 @@ namespace Odontology.Persistance.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserRole<int>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -164,27 +172,27 @@ namespace Odontology.Persistance.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "e7873ea9-da5a-40fb-904e-afd86771ef21",
+                            ConcurrencyStamp = "4ad677ef-0170-44ac-84f0-65e4c58d9857",
                             CreatedBy = "System",
-                            CreatedOn = new DateTime(2021, 10, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedOn = new DateTime(2021, 10, 19, 5, 28, 39, 808, DateTimeKind.Utc).AddTicks(3924),
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "dca9e54e-cdaa-45f1-93f5-6744b69de03c",
+                            ConcurrencyStamp = "421644c3-55ed-4001-8d00-0c30c7a4d72d",
                             CreatedBy = "System",
-                            CreatedOn = new DateTime(2021, 10, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedOn = new DateTime(2021, 10, 19, 5, 28, 39, 808, DateTimeKind.Utc).AddTicks(4524),
                             Name = "Doctor",
                             NormalizedName = "DOCTOR"
                         },
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "d77bbed5-82ca-4d49-8484-19b683fb1add",
+                            ConcurrencyStamp = "8a9b3166-a8b2-4bfb-a82c-179cfb8349fd",
                             CreatedBy = "System",
-                            CreatedOn = new DateTime(2021, 10, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedOn = new DateTime(2021, 10, 19, 5, 28, 39, 808, DateTimeKind.Utc).AddTicks(4536),
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -372,6 +380,28 @@ namespace Odontology.Persistance.Migrations
                     b.HasIndex("PatientId");
 
                     b.ToTable("Visits");
+                });
+
+            modelBuilder.Entity("Odontology.Domain.Models.UserRole", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<int>");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasDiscriminator().HasValue("UserRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

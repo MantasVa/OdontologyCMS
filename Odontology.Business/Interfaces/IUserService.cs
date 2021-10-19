@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Odontology.Business.DTO;
+using Odontology.Domain.Models;
 
 namespace Odontology.Business.Interfaces
 {
@@ -10,8 +12,12 @@ namespace Odontology.Business.Interfaces
 
         Task<UserDto> GetByIdAsync(int id);
 
+        Task<IdentityResult> AddUserAsync(ApplicationUser user, string password, string[] roles);
+
         void Edit(UserCreateDto userCreateDto);
 
-        Task Delete(int id);
+        Task<IdentityResult> UpdateUserRolesAsync(string userId, string[] newRoles);
+
+        Task DeleteAsync(int id);
     }
 }

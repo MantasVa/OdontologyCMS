@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Odontology.Domain.Models;
 using Odontology.Persistance.Infrastructure;
@@ -10,6 +11,8 @@ namespace Odontology.Persistance
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        
+        public DbSet<IdentityUserRole<int>> IdentityUserRoles { get; set; }
 
         public DbSet<Article> Articles { get; set; }
 

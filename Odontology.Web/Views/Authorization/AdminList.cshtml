@@ -18,9 +18,9 @@
                                 <tr>
                                     <th>Vardas</th>
                                     <th>Email</th>
+                                    <th>Rolės</th>
                                     <th>Sukurtas</th>
-                                    <th>Daugiau</th>
-                                    <th>Redaguoti</th>
+                                    <th>Keisti Roles</th>
                                     <th>Ištrinti</th>
                                 </tr>
                             </thead>
@@ -28,9 +28,9 @@
                                 <tr>
                                     <th>Vardas</th>
                                     <th>Email</th>
+                                    <th>Rolės</th>
                                     <th>Sukurtas</th>
-                                    <th>Daugiau</th>
-                                    <th>Redaguoti</th>
+                                    <th>Keisti Roles</th>
                                     <th>Ištrinti</th>
                                 </tr>
                             </tfoot>
@@ -40,12 +40,15 @@
                                     <tr>
                                         <td>@user.Name @user.Surname</td>
                                         <td>@user.Email</td>
+                                        <td>
+                                            @foreach (var userRole in user.Roles)
+                                            {
+                                                <span>@userRole;</span>
+                                            }
+                                        </td>
                                         <td>@user.CreatedOn</td>
                                         <td>
-                                            <a class="btn btn-outline-primary text-black-50" asp-action="Details" asp-route-id="@user.Id"> Daugiau </a>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-outline-primary text-black-50" asp-action="Edit" asp-route-id="@user.Id">Redaguoti</a>
+                                            <a asp-action="EditRoles" asp-route-id="@user.Id">Keisti</a>
                                         </td>
                                         <td>
                                             <form method="post" asp-action="Delete" asp-route-id="@user.Id">

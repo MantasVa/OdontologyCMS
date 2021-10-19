@@ -1,7 +1,7 @@
-﻿@model EntityCreateViewModel<RegistrationViewModel>
+﻿@model UserCreateViewModel
 @{
     var createUpdateTitle = Model.ActionType == ActionTypeEnum.Create ? "Pridėti naudotoją" : Model.ActionType == ActionTypeEnum.Edit ? "Redaguoti naudotoją" : "";
-    ViewBag.Title = "naujas naudotojas";
+    ViewBag.Title = createUpdateTitle;
     Layout = "_Layout";
 }
 
@@ -47,20 +47,23 @@
                 <input type="email" class="form-control" asp-for="EntityViewModel.Email" required />
             </div>
 
-            @if (Model.ActionType == ActionTypeEnum.Create)
-            {
-                <div class="form-group">
-                    <div><span asp-validation-for="EntityViewModel.Password" class="text-danger"></span></div>
-                    <label asp-for="EntityViewModel.Password">Slaptažodis<span class="text-danger">*</span>:</label>
-                    <input type="password" class="form-control" asp-for="EntityViewModel.Password" required />
-                </div>
+           <div class="form-group">
+               <div><span asp-validation-for="EntityViewModel.Password" class="text-danger"></span></div>
+               <label asp-for="EntityViewModel.Password">Slaptažodis<span class="text-danger">*</span>:</label>
+               <input type="password" class="form-control" asp-for="EntityViewModel.Password" required />
+           </div>
 
-                <div class="form-group">
-                    <div><span asp-validation-for="EntityViewModel.ConfirmPassword" class="text-danger"></span></div>
-                    <label asp-for="EntityViewModel.ConfirmPassword">Pakartoti slaptažodį<span class="text-danger">*</span>:</label>
-                    <input type="password" class="form-control" asp-for="EntityViewModel.ConfirmPassword" required />
-                </div>
-            }
+           <div class="form-group">
+               <div><span asp-validation-for="EntityViewModel.ConfirmPassword" class="text-danger"></span></div>
+               <label asp-for="EntityViewModel.ConfirmPassword">Pakartoti slaptažodį<span class="text-danger">*</span>:</label>
+               <input type="password" class="form-control" asp-for="EntityViewModel.ConfirmPassword" required />
+           </div>
+
+            <div class="form-group">
+                <select asp-for="RoleNames" asp-items="Model.Roles" class="custom-select" multiple>
+                </select>
+            </div>
+
             <div>
                 <button type="submit" class="btn btn-success">Sukurti</button>
             </div>

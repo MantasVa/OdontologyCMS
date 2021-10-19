@@ -17,5 +17,16 @@ namespace Odontology.Web.Infrastructure.Extensions
                     }
                 ));
         }
+
+        public static IEnumerable<SelectListItem> ToSelectListItemsEnumerable(this IEnumerable<RoleDto> employees)
+        {
+            return new List<SelectListItem>(
+                employees.Select(c => new SelectListItem
+                    {
+                        Value = c.Name,
+                        Text = c.Name
+                    }
+                ));
+        }
     }
 }

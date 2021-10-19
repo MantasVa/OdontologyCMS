@@ -1,5 +1,4 @@
 ﻿using Odontology.Business.Infrastructure.Enums;
-using Odontology.Web.Infrastructure;
 
 namespace Odontology.Web.ViewModels
 {

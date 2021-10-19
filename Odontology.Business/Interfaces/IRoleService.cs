@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Odontology.Business.DTO;
 
 namespace Odontology.Business.Interfaces
 {
-    public interface IEmployeeService
+    public interface IRoleService
     {
-        IEnumerable<EmployeeDto> GetAll();
+        IEnumerable<RoleDto> GetAll();
     }
 }
