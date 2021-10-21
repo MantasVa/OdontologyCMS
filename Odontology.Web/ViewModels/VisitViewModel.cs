@@ -9,9 +9,9 @@ namespace Odontology.Web.ViewModels
 
         public DateTime DateTime { get; set; }
 
-        public PatientDto Patient { get; set; }
+        public UserNameDto Patient { get; set; }
 
-        public EmployeeDto Doctor { get; set; }
+        public EmployeeDto Employee { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

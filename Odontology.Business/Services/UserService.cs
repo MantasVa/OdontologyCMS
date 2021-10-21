@@ -50,6 +50,20 @@ namespace Odontology.Business.Services
                 };
         }
 
+        public IEnumerable<UserNameDto> GetByRole(params string[] roleNames)
+        {
+
+            var users = userRepository.GetAllQuery()
+                        .Select(x => new UserNameDto
+                         {
+                             Id = x.Id,
+                             Name = x.Name,
+                             Surname = x.Surname
+                         }).ToList().Where(x => roleRepository.GetUserRoleNames(x.Id).Intersect(roleNames).FirstOrDefault() != null);
+
+            return users;
+        }
+
         public async Task<UserDto> GetByIdAsync(int id)
         {
             var user = await userRepository.GetByIdAsync(id);

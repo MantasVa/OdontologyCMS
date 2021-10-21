@@ -7,7 +7,5 @@ namespace Odontology.Business.DTO
         public UserDto User { get; set; }
 
         public ActionTypeEnum ActionType { get; set; }
-
-
     }
 }

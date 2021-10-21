@@ -10,6 +10,6 @@ namespace Odontology.Business.DTO
 
         public int EmployeeId { get; set; }
 
-        public int PatientId { get; set; }
+        public int UserId { get; set; }
     }
 }

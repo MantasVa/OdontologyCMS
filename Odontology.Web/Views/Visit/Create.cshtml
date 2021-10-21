@@ -1,4 +1,6 @@
-﻿@model VisitCreateViewModel
+﻿@using Odontology.Common.Enums
+@using Odontology.Common
+@model VisitCreateViewModel
 @{
     var createUpdateTitle = Model.ActionType == ActionTypeEnum.Create ? "Pridėti vizitą" : Model.ActionType == ActionTypeEnum.Edit ? "Redaguoti vizitą" : "";
     ViewBag.Title = "Vizitas";
@@ -28,13 +30,28 @@
                 }
             }
             <input type="hidden" asp-for="EntityViewModel.Id" />
+            <input type="hidden" asp-for="ActionType" />
 
             <div class="form-group">
                 <div><span asp-validation-for="EntityViewModel.DateTime" class="text-danger"></span></div>
                 <label asp-for="EntityViewModel.DateTime">Vizito laikas<span class="text-danger">*</span>:</label>
                 <input type="datetime" class="form-control" asp-for="EntityViewModel.DateTime" required />
             </div>
-            
+
+            @if (User.IsInRole(Role.Admin.ToDisplayName()))
+            {
+                <div class="form-group">
+                    <div><span asp-validation-for="UserId" class="text-danger"></span></div>
+                    <label asp-for="UserId" class="small mb-1">Pacientas<span class="text-danger">*</span></label>
+                    <select asp-for="UserId" asp-items="Model.UsersSelectEnumerable" class="form-control">
+                        @if (User.IsInRole(Role.User.ToDisplayName()))
+                        {
+                            <option selected="selected" value="@user.Id">Aš</option>
+                        }
+                    </select>
+                </div>
+            }
+
             <div class="form-group">
                 <div><span asp-validation-for="EmployeeId" class="text-danger"></span></div>
                 <label asp-for="EmployeeId" class="small mb-1">Daktaras<span class="text-danger">*</span></label>

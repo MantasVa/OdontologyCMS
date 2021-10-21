@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
 using Odontology.Domain.Models;
 using Odontology.Persistance.Interfaces;
 
@@ -21,5 +22,8 @@ namespace Odontology.Persistance.Repositories
                     on userRole.RoleId equals role.Id
                 select role.Name;
         }
+
+        public IQueryable<IdentityUserRole<int>> GetUserRolesQuery(int userId)
+            => dbContext.IdentityUserRoles.Where(x => x.UserId == userId);
     }
 }

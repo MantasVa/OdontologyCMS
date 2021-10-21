@@ -18,7 +18,7 @@ namespace Odontology.Web.Infrastructure.Extensions
                 {
                     if (currentUserId != null && int.TryParse(currentUserId, out int userId))
                     {
-                        v.PatientId = userId;
+                        v.UserId = userId;
                     }
                 }).Config;
 

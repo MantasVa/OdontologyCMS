@@ -12,6 +12,8 @@ namespace Odontology.Business.Interfaces
 
         Task<UserDto> GetByIdAsync(int id);
 
+        IEnumerable<UserNameDto> GetByRole(params string[] roleNames);
+
         Task<IdentityResult> AddUserAsync(ApplicationUser user, string password, string[] roles);
 
         void Edit(UserCreateDto userCreateDto);

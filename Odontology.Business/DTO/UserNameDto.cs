@@ -1,6 +1,6 @@
 ﻿namespace Odontology.Business.DTO
 {
-    public class EmployeeDto
+    public class UserNameDto
     {
         public int Id { get; set; }
 

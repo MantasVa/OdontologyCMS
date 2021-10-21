@@ -30,11 +30,10 @@ namespace Odontology.Business.Services
                 select new EmployeeDto
                 {
                     Id = employee.Id,
-                    Fullname = FormatFullName(user.Name, user.Surname)
+                    Name = user.Name,
+                    Surname = user.Surname
                 };
             return x;
         }
-
-        private static string FormatFullName(string name, string surname) => $"{name} {surname}";
     }
 }

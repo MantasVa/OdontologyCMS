@@ -18,6 +18,17 @@ namespace Odontology.Web.Infrastructure.Extensions
                 ));
         }
 
+        public static IEnumerable<SelectListItem> ToSelectListItemsEnumerable(this IEnumerable<UserNameDto> users)
+        {
+            return new List<SelectListItem>(
+                users.Select(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Fullname
+                    }
+                ));
+        }
+
         public static IEnumerable<SelectListItem> ToSelectListItemsEnumerable(this IEnumerable<RoleDto> employees)
         {
             return new List<SelectListItem>(
