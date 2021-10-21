@@ -37,6 +37,12 @@
                 <label asp-for="EntityViewModel.DateTime">Vizito laikas<span class="text-danger">*</span>:</label>
                 <input type="datetime" class="form-control" asp-for="EntityViewModel.DateTime" required />
             </div>
+            
+            <div class="form-group">
+                <div><span asp-validation-for="EntityViewModel.Comment" class="text-danger"></span></div>
+                <label asp-for="EntityViewModel.Comment">Papildomos pastabos (reikalingos paslaugos, vizito tikslas t.t)<span class="text-danger">*</span>:</label>
+                <textarea type="text" class="form-control" asp-for="EntityViewModel.Comment" ></textarea>
+            </div>
 
             @if (User.IsInRole(Role.Admin.ToDisplayName()))
             {
@@ -55,7 +61,7 @@
             <div class="form-group">
                 <div><span asp-validation-for="EmployeeId" class="text-danger"></span></div>
                 <label asp-for="EmployeeId" class="small mb-1">Daktaras<span class="text-danger">*</span></label>
-                <select asp-for="EmployeeId" asp-items="Model.EmployeesSelectEnumerable" class="form-control">
+                <select asp-for="EmployeeId" asp-items="Model.EmployeesSelectEnumerable" class="form-control" required>
                     <option selected="selected">Pasirinkti</option>
                 </select>
             </div>

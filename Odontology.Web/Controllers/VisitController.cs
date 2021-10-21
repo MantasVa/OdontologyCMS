@@ -57,6 +57,7 @@ namespace Odontology.Web.Controllers
             var visitDto = await visitService.GetByIdAsync(id);
             var visit = visitDto.Adapt<VisitViewModel>();
 
+            SetViewBag();
             return View(visit);
         }
 
@@ -110,6 +111,13 @@ namespace Odontology.Web.Controllers
             visitService.Delete(id);
 
             return RedirectToAction(nameof(AdminList));
+        }
+
+        private void SetViewBag()
+        {
+            ViewBag.IsAdmin = User.IsInRole(Role.Admin.ToDisplayName());
+            ViewBag.IsDoctor = User.IsInRole(Role.Doctor.ToDisplayName());
+            ViewBag.IsUser = User.IsInRole(Role.User.ToDisplayName());
         }
     }
 }

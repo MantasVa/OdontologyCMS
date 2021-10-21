@@ -27,7 +27,9 @@ namespace Odontology.Business.Services
         public async Task<VisitDto> GetByIdAsync(int id)
         {
             var visit = await visitRepository.GetByIdAsync(id);
-            return visit.Adapt<VisitDto>();
+            var userEmployee = userRepository.GetAllQuery().FirstOrDefault(x => x.EmployeeId == visit.EmployeeId);
+
+            return visit.ToVisitDto(userEmployee);
         }
 
         public IEnumerable<VisitDto> GetByPatientId(int patientId)

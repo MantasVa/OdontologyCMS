@@ -6,7 +6,7 @@ namespace Odontology.Business.Infrastructure.Extensions
 {
     public static class MappingExtensions
     {
-        public static Visit ToVisit(this VisitCreateDto viewModel)
+        public static Visit ToVisit(this VisitCreateDto visitCreateDto)
         {
             var mapConfig = TypeAdapterConfig<VisitCreateDto, Visit>
                 .NewConfig()
@@ -16,7 +16,18 @@ namespace Odontology.Business.Infrastructure.Extensions
                     src => src.UserId)
                 .Config;
 
-            return viewModel.Adapt<Visit>(mapConfig);
+            return visitCreateDto.Adapt<Visit>(mapConfig);
+        }
+
+        public static VisitDto ToVisitDto(this Visit visit, ApplicationUser employeeUser)
+        {
+            var mapConfig = TypeAdapterConfig<Visit, VisitDto>
+                .NewConfig()
+                .Map(dest => dest.Employee,
+                    src => employeeUser)
+                .Config;
+
+            return visit.Adapt<VisitDto>(mapConfig);
         }
     }
 }

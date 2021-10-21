@@ -9,6 +9,8 @@ namespace Odontology.Web.ViewModels
 
         public DateTime DateTime { get; set; }
 
+        public string Comment { get; set; }
+
         public UserNameDto Patient { get; set; }
 
         public EmployeeDto Employee { get; set; }

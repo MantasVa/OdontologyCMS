@@ -13,5 +13,7 @@ namespace Odontology.Domain.Models
         public int EmployeeId { get; set; }
 
         public Employee Employee { get; set; }
+
+        public string Comment { get; set; }
     }
 }
