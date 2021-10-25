@@ -20,6 +20,8 @@ namespace Odontology.Persistance
 
         public DbSet<Visit> Visits { get; set; }
 
+        public DbSet<Image> Images { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
-using Odontology.Business.DTO;
 using Odontology.Business.Infrastructure.Enums;
 using Odontology.Business.Interfaces;
+using Odontology.Web.Infrastructure.Extensions;
 using Odontology.Web.ViewModels;
 
 namespace Odontology.Web.Controllers
@@ -25,7 +26,16 @@ namespace Odontology.Web.Controllers
 
             return View(articlesViewModel);
         }
-        
+
+        public IActionResult Index()
+        {
+            var articlesViewModel = 
+                 articleService.GetAll()
+                .Select(x => x.ToArticleViewModel()).ToList();
+
+            return View(articlesViewModel);
+        }
+
         public async Task<IActionResult> Details(int id)
         {
             var articleDto = await articleService.GetByIdAsync(id);
@@ -34,7 +44,7 @@ namespace Odontology.Web.Controllers
             return View(article);
         }
 
-        public IActionResult Create() => View(new EntityCreateViewModel<ArticleViewModel>
+        public IActionResult Create() => View(new ArticleCreateViewModel
         {
             EntityViewModel = new ArticleViewModel(),
             ActionType = ActionTypeEnum.Create
@@ -45,7 +55,7 @@ namespace Odontology.Web.Controllers
             var articleDto = await articleService.GetByIdAsync(id);
             var article = articleDto.Adapt<ArticleViewModel>();
 
-            return View(nameof(Create), new EntityCreateViewModel<ArticleViewModel>
+            return View(nameof(Create), new ArticleCreateViewModel
             {
                 EntityViewModel = article,
                 ActionType = ActionTypeEnum.Edit
@@ -53,13 +63,16 @@ namespace Odontology.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(EntityCreateViewModel<ArticleViewModel> viewModel)
+        public IActionResult Create(ArticleCreateViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
             }
-            articleService.AddOrEdit(viewModel.EntityViewModel.Adapt<ArticleDto>());
+
+            var articleCreateDto = viewModel.ToArticleCreateDto();
+
+            articleService.AddOrEdit(articleCreateDto);
 
             return RedirectToAction(nameof(AdminList));
         }

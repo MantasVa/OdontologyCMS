@@ -1,0 +1,49 @@
+﻿@model IList<ArticleViewModel>
+@{
+    ViewBag.Title = "naujienos";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        var postBody = Model[i].Body.Length <= 500 ? Model[i].Body : Model[i].Body.Substring(0, 500) + "...";
+        var createdOnLocalTime = Model[i].CreatedOn.ToLocalTime();
+
+        <div class="row">
+            <div class="col-xl-4">
+                @if (Model[i].Images.Any())
+                {
+                    <a asp-controller="Article" asp-action="Details" asp-route-id="@Model[i].Id">
+                        <img src="@Url.Action("Render", "Image", new { id = Model[i].Images.First().Id })"
+                             alt="@Model[i].Images.First().CreatedOn" class="img-fluid">
+                    </a>
+
+                }
+                else
+                {
+                    <a asp-controller="Article" asp-action="Details" asp-route-id="@Model[i].Id">
+                        <img src="~/img/post-image.png" class="img-fluid"></a>
+                 } 
+            </div>
+            <div class="col-xl-8">
+                <h3 class="title">@Html.Raw(Model[i].Title)</h3>
+                <p class="text-muted"><i class="far fa-calendar-alt"></i> @createdOnLocalTime.ToString("f", System.Threading.Thread.CurrentThread.CurrentCulture)</p>
+                <p>@Html.Raw(postBody)</p>
+                <div class="d-flex justify-content-between">
+                    <p class="text-muted"><i class="fas fa-user"></i> @Model[i].CreatedBy </p>
+                    <a asp-controller="Article" asp-action="Details" asp-route-id="@Model[i].Id"
+                       class="btn btn-outline-dark">
+                        Daugiau
+                    </a>
+                </div>
+            </div>
+        </div>
+        @if (i + 1 != Model.Count())
+        {
+            <hr>
+        }
+    }
+
+</div>

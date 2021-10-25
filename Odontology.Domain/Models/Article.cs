@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace Odontology.Domain.Models
 {
@@ -7,5 +7,7 @@ namespace Odontology.Domain.Models
         public string Title { get; set; }
 
         public string Body { get; set; }
+
+        public ICollection<Image> Images { get; set; }
     }
 }

@@ -39,12 +39,14 @@
                             <tbody>
                                 @foreach (var post in Model)
                                 {
-                                <tr>
+                                    var createdOnLocalTime = post.CreatedOn.ToLocalTime();
+                                    var updatedOnLocalTime = post.UpdatedOn?.ToLocalTime();
+                                    var updateColumn = post.UpdatedBy is not null ? $"{post.UpdatedBy} | {post.UpdatedOn}" : default;
+                                    <tr>
                                     <td>@post.Title</td>
-                                    @{ var updateColumn = post.UpdatedBy is not null ? $"{post.UpdatedBy} | {post.UpdatedOn}" : "";}
                                     <td>@updateColumn</td>
                                     <td>@post.CreatedBy</td>
-                                    <td>@post.CreatedOn</td>
+                                    <td>@createdOnLocalTime</td>
                                     <td>
                                         <a class="btn btn-outline-primary text-black-50" asp-action="Details" asp-route-id="@post.Id"> Daugiau </a>
                                     </td>

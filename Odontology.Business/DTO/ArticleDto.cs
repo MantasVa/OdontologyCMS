@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Odontology.Business.DTO
 {
@@ -9,6 +10,8 @@ namespace Odontology.Business.DTO
         public string Title { get; set; }
 
         public string Body { get; set; }
+
+        public IEnumerable<ImageDto> Images { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

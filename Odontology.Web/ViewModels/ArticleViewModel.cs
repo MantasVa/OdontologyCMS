@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Odontology.Business.DTO;
 
 namespace Odontology.Web.ViewModels
 {
@@ -9,6 +11,8 @@ namespace Odontology.Web.ViewModels
         public string Title { get; set; }
 
         public string Body { get; set; }
+
+        public IList<ImageDto> Images { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

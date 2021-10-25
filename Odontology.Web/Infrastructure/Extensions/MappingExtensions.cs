@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Mapster;
 using Odontology.Business.DTO;
 using Odontology.Domain.Models;
@@ -25,24 +26,38 @@ namespace Odontology.Web.Infrastructure.Extensions
             return viewModel.Adapt<VisitCreateDto>(mapConfig);
         }
 
-        public static UserCreateDto ToUserCreateDto(this EntityCreateViewModel<RegistrationViewModel> viewModel)
-        {
-            var mapConfig = TypeAdapterConfig<EntityCreateViewModel<RegistrationViewModel>, UserCreateDto>
-                .NewConfig()
-                .Map(dest => dest.User,
-                    src => src.EntityViewModel).Config;
-
-            return viewModel.Adapt<UserCreateDto>(mapConfig);
-        }
-
         public static ApplicationUser ToApplicationUser(this RegistrationViewModel viewModel)
         {
             var mapConfig = TypeAdapterConfig<RegistrationViewModel, ApplicationUser>
                 .NewConfig()
                 .Map(dest => dest.UserName,
-                    src => src.Email).Config;
+                    src => src.Email)
+                .Config;
 
             return viewModel.Adapt<ApplicationUser>(mapConfig);
+        }
+
+        public static ArticleViewModel ToArticleViewModel(this ArticleDto articleDto)
+        {
+            var mapConfig = TypeAdapterConfig<ArticleViewModel, ArticleDto>
+                .NewConfig().Config;
+
+            return articleDto.Adapt<ArticleViewModel>(mapConfig);
+        }
+
+        public static ArticleCreateDto ToArticleCreateDto(this ArticleCreateViewModel viewModel)
+        {
+            var mapConfig = TypeAdapterConfig<ArticleCreateViewModel, ArticleCreateDto>
+                .NewConfig()
+                .Ignore(dest => dest.Files, 
+                        src => src.Files)
+                .Map(dest => dest.Article,
+                    src => src.EntityViewModel)
+                .Config;
+
+            var dto = viewModel.Adapt<ArticleCreateDto>(mapConfig);
+            dto.Files = viewModel.Files;
+            return dto;
         }
     }
 }

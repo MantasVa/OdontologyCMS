@@ -34,6 +34,7 @@ namespace Odontology.Web
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IImageService, ImageService>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

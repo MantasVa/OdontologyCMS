@@ -11,7 +11,7 @@
         <div class="col-lg">
 
             <!-- Title -->
-            <h1 class="mt-4">@Html.Raw(Model.Title)</h1>
+            <h1 class="mt-4">@Model.Title</h1>
 
             <!-- Author -->
             <p class="lead">
@@ -26,10 +26,37 @@
                 @Model.CreatedOn.ToString("f", System.Threading.Thread.CurrentThread.CurrentCulture)
             </p>
             <hr>
+            @if (Model.Images.Any()){
+                <a target="_blank" asp-action="Render" asp-controller="Image" asp-route-id="@Model.Images.First().Id ">
+                    <img src="@Url.Action("Render", "Image", new { id = Model.Images.First().Id })"
+                         alt="@Model.Images.First().CreatedOn" class="img-fluid rounded">
+                </a>
+
+            }
+            else
+            {
+                <img src="~/img/post-image.png" class="img-fluid rounded" alt="Straipsnis nuotraukų neturi">
+            }
+            <hr />
 
             <!-- Post Content -->
-            <p>@Html.Raw(Model.Body)</p>
+            <p>@Model.Body</p>
         </div>
 
+    </div>
+    
+    <div class="row">
+        @if (Model.Images.Count > 1)
+        {
+            @for (int i = 1; i < Model.Images.Count; i++)
+            {
+                <figure class="col-md-4">
+                    <a target="_blank" asp-action="Render" asp-controller="Image" asp-route-id="@Model.Images[i].Id ">
+                        <img src="@Url.Action("Render", "Image", new { id = Model.Images[i].Id })"
+                             alt="@Model.Images[i].CreatedOn" class="img-fluid rounded">
+                    </a>
+                </figure>
+            }
+        }
     </div>
 </div>
