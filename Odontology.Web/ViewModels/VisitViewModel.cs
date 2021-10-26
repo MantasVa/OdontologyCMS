@@ -1,5 +1,6 @@
 ﻿using System;
 using Odontology.Business.DTO;
+using Odontology.Web.Infrastructure.Attributes;
 
 namespace Odontology.Web.ViewModels
 {
@@ -7,6 +8,7 @@ namespace Odontology.Web.ViewModels
     {
         public int Id { get; set; }
 
+        [DateGreaterThan( "Vizito laikas turėtų būti bent viena kalendorine diena ateityje.")]
         public DateTime DateTime { get; set; }
 
         public string Comment { get; set; }

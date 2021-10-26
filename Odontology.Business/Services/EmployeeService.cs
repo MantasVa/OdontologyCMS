@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Odontology.Business.DTO;
 using Odontology.Business.Interfaces;
 using Odontology.Domain.Models;
@@ -32,6 +30,22 @@ namespace Odontology.Business.Services
                     Id = employee.Id,
                     Name = user.Name,
                     Surname = user.Surname
+                };
+            return x;
+        }
+
+        public IEnumerable<EmployeeDetailedDto> GetAllDetailed()
+        {
+            var x =
+                from employee in employeeRepository.GetAllQuery()
+                join user in userRepository.GetAllQuery()
+                    on employee.Id equals user.Employee.Id
+                select new EmployeeDetailedDto
+                {
+                    Id = employee.Id,
+                    Name = user.Name,
+                    Surname = user.Surname,
+                    Email = user.Email
                 };
             return x;
         }

@@ -35,7 +35,7 @@ namespace Odontology.Web.Controllers
 
         public IActionResult AdminList()
         {
-            var visitsViewModel = visitService.GetAll().Adapt<IEnumerable<VisitViewModel>>();
+            var visitsViewModel = visitService.GetAll().Adapt<IEnumerable<VisitViewModel>>() ?? new List<VisitViewModel>();
             return View(visitsViewModel);
         }
 
@@ -95,22 +95,23 @@ namespace Odontology.Web.Controllers
                 return View(viewModel);
             }
 
-            var userIdString = User.IsInRole(Role.Admin.ToDisplayName())
-                                ? viewModel.UserId.ToString()
-                                : userManager.GetUserId(User);
+            var isAdmin = User.IsInRole(Role.Admin.ToDisplayName());
+            var userIdString = isAdmin ? viewModel.UserId.ToString() : userManager.GetUserId(User);
 
             var visitDto = viewModel.ToVisitCreateDto(userIdString);
+
             visitService.AddOrEdit(visitDto);
 
-            return RedirectToAction(nameof(AdminList));
+            return isAdmin ? RedirectToAction(nameof(AdminList)) : RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            visitService.Delete(id);
+            visitService.DeleteAsync(id);
 
-            return RedirectToAction(nameof(AdminList));
+            var isAdmin = User.IsInRole(Role.Admin.ToDisplayName());
+            return isAdmin ? RedirectToAction(nameof(AdminList)) : RedirectToAction(nameof(Index));
         }
 
         private void SetViewBag()

@@ -14,6 +14,6 @@ namespace Odontology.Business.Interfaces
 
         void AddOrEdit(VisitCreateDto visitDto);
 
-        void Delete(int id);
+        Task DeleteAsync(int id);
     }
 }

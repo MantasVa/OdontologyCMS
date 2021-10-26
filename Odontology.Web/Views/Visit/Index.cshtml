@@ -2,20 +2,109 @@
 @{
     ViewBag.Title = "vizitai";
     Layout = "_Layout";
+
+
+    var localTime = DateTime.UtcNow.ToLocalTime();
+
+    var upcomingVisits = Model.Where(x => x.DateTime > localTime).OrderBy(x => x.DateTime).ToList();
+    var closestUpcomingVisit = upcomingVisits.Take(1).FirstOrDefault();
+
+    var pastVisits = Model.Where(x => x.DateTime < localTime);
 }
 
+<div class="container">
+
+    @if (Model.Any())
+    {
+        <div class="row"><p class="text-center display-6 top-margin"> Artėjantys vizitai</p></div>
+        <div class="row align-items-start top-margin">
+            @if (closestUpcomingVisit != null)
+            {
+
+                <div class="col">
+                    <h2>Artimiausias jūsų vizitas</h2>
+
+                    <div class="top-margin">
+                        <p>Laikas: @closestUpcomingVisit.DateTime</p>
+
+                        <p>Daktaras: @closestUpcomingVisit.Employee.Fullname</p>
+
+                        @if (closestUpcomingVisit.Comment != null)
+                        {
+                            <p>Informacija:</p>
+                            <p>@closestUpcomingVisit.Comment</p>
+                        }
+
+                        <p>Pridėtas: @closestUpcomingVisit.CreatedOn.ToLocalTime()</p>
+                    </div>
+                    
+                    <div class="flex-space-evenly">
+                        <div class="flex-space-evenly">
+                            <a class="btn list-button" style="margin-right: 10px" asp-action="Details" asp-route-id="@closestUpcomingVisit.Id"><i class="fas fa-info-circle big-icon"></i></a>
+                            <a class="btn list-button" style="margin-right: 10px" asp-action="Edit" asp-route-id="@closestUpcomingVisit.Id"><i class="fas fa-edit big-icon"></i></a>
+                            <form method="post"  asp-action="Delete" asp-route-id="@closestUpcomingVisit.Id" class="inline">
+                                <button type="submit" class="btn list-button"><i class="fas fa-trash big-icon"></i></button>
+                            </form>
+                        </div>
+
+                        <div>
+                            <a class="btn btn-outline-dark" asp-action="Create"> Pridėti naują vizitą </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    
+                    <div class="table-responsive">
+                        <table class="table" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Laikas</th>
+                                    <th>Daktaras</th>
+                                    <th>Sukurtas</th>
+                                    <th>Veiksmai</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var visit in upcomingVisits)
+                                {
+                                    <tr>
+                                        <td>@visit.DateTime</td>
+                                        <td>@visit.Employee.Fullname</td>
+                                        <td>@visit.CreatedOn.ToLocalTime()</td>
+                                        <td>
+                                            <div>
+                                                <a class="btn list-button" asp-action="Details" asp-route-id="@visit.Id"><i class="fas fa-info-circle"></i></a>
+                                                <a class="btn list-button" asp-action="Edit" asp-route-id="@visit.Id"><i class="fas fa-edit"></i></a>
+                                                <form method="post" asp-action="Delete" asp-route-id="@visit.Id" class="inline">
+                                                    <button type="submit" class="btn list-button"><i class="fas fa-trash"></i></button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            }
+            else
+            {
+                <div class="col text-center">
+                    <p>Neturite artėjančių vizitų</p>
+                    <a class="btn btn-outline-dark" asp-action="Create"> Pridėti naują vizitą </a>
+                </div>
+            }
+        </div>
 
 
-<h2>Jūsų Vizitai</h2>
+        @if (pastVisits.Any())
+        {
+            <div class="row align-items-start top-margin">
+                <div class="col">
+                    <p class="text-center display-6"> Praeties vizitai</p>
 
-<div id="layoutSidenav_content">
-    <main>
-        <div class="container-fluid">
-            <div class="card mb-4 mt-5">
-                <div class="card-header"><i class="fas fa-table mr-1"></i>Naujienų sąrašas</div>
-
-                <div class="card-body">
-                    <a class="btn btn-outline-primary text-black-50" asp-action="Create"> Kurti Naujieną </a>
                     <div class="table-responsive">
                         <table class="table" id="dataTable" width="100%" cellspacing="0">
                             <thead>
@@ -23,39 +112,20 @@
                                     <th>Vizito Laikas</th>
                                     <th>Daktaras</th>
                                     <th>Pridėtas</th>
-                                    <th>Daugiau</th>
-                                    <th>Redaguoti</th>
-                                    <th>Ištrinti</th>
+                                    <th>Veiksmai</th>
                                 </tr>
                             </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Vizito Laikas</th>
-                                    <th>Daktaras</th>
-                                    <th>Pridėtas</th>
-                                    <th>Daugiau</th>
-                                    <th>Redaguoti</th>
-                                    <th>Ištrinti</th>
-                                </tr>
-                            </tfoot>
                             <tbody>
-                                @foreach (var visit in Model)
+                                @foreach (var visit in pastVisits)
                                 {
                                     <tr>
                                         <td>@visit.DateTime</td>
                                         <td>@visit.Employee.Fullname</td>
-                                        <td>@visit.CreatedOn</td>
+                                        <td>@visit.CreatedOn.ToLocalTime()</td>
                                         <td>
-                                            <a class="btn btn-outline-primary text-black-50" asp-action="Details" asp-route-id="@visit.Id"> Daugiau </a>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-outline-primary text-black-50" asp-action="Edit" asp-route-id="@visit.Id">Redaguoti</a>
-                                        </td>
-                                        <td>
-                                            <form method="post" asp-action="Delete" asp-route-id="@visit.Id">
-                                                <input type="submit" class="btn btn-outline-primary text-black-50"
-                                                       value="Naikinti" />
-                                            </form>
+                                            <div>
+                                                <a class="btn list-button" asp-action="Details" asp-route-id="@visit.Id"><i class="fas fa-info-circle"></i></a>
+                                            </div>
                                         </td>
                                     </tr>
                                 }
@@ -64,6 +134,17 @@
                     </div>
                 </div>
             </div>
+        }
+    }
+    else
+    {
+        <div class="text-center top-margin">
+            <p>Kolkas neturite vizitų</p>
+            <a class="btn btn-outline-dark" asp-action="Create"> Pridėti vizitą </a>
         </div>
-    </main>
+
+    }
+
 </div>
+
+
