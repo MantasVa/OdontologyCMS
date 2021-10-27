@@ -2,7 +2,7 @@
 
 namespace Odontology.Web.ViewModels
 {
-    public class EmployeeViewModel
+    public class EmployeeTableViewModel
     {
         public int Id { get; set; }
 

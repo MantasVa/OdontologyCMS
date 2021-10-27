@@ -1,20 +1,18 @@
 ﻿using System;
+using Microsoft.AspNetCore.Http;
+using Odontology.Business.DTO;
 
-namespace Odontology.Business.DTO
+namespace Odontology.Web.ViewModels
 {
-    public class EmployeeDetailedDto
+    public class EmployeeEditViewModel
     {
         public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public string Surname { get; set; }
-
-        public string Email { get; set; }
 
         public ImageDto Image { get; set; }
 
         public string Resume { get; set; }
+
+        public IFormFile File { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Content Remove="Views\Authorization\Registration.cshtml" />
+    <Content Remove="Views\Employee\Edit.cshtml" />
     <Content Remove="Views\Home\Error.cshtml" />
     <Content Remove="Views\Visit\AdminList.cshtml" />
   </ItemGroup>
@@ -32,6 +33,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Authorization\Registration.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Employee\Edit.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Home\Error.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Visit\AdminList.cshtml" />
   </ItemGroup>
@@ -47,6 +49,7 @@
     <None Include="Areas\Identity\Pages\_ViewImports.cshtml" />
     <None Include="Areas\Identity\Pages\_ViewStart.cshtml" />
     <None Include="Views\Authorization\Registration.cshtml" />
+    <None Include="Views\Employee\Edit.cshtml" />
     <None Include="Views\Home\Error.cshtml" />
     <None Include="Views\Visit\AdminList.cshtml" />
   </ItemGroup>
@@ -61,6 +64,10 @@
 
   <ItemGroup>
     <Folder Include="Infrastructure\Enums\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Employee\Edit.cshtml" />
   </ItemGroup>
 
 </Project>

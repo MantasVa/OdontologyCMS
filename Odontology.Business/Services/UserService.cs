@@ -86,7 +86,7 @@ namespace Odontology.Business.Services
             return createResult;
         }
 
-        public void Edit(UserCreateDto userCreateDto)
+        public async Task EditAsync(UserCreateDto userCreateDto)
         {
             if (userCreateDto == null)
                 throw new ArgumentNullException(nameof(userCreateDto));
@@ -96,7 +96,7 @@ namespace Odontology.Business.Services
             switch (userCreateDto.ActionType)
             {
                 case ActionTypeEnum.Edit:
-                    userRepository.UpdateAsync(user);
+                    await userRepository.UpdateAsync(user);
                     break;
                 default:
                     throw new ArgumentException("Action type is not valid", nameof(userCreateDto));
@@ -122,7 +122,7 @@ namespace Odontology.Business.Services
             }
             else if (previousRoles.Contains(doctorRoleName) && !newRoles.Contains(doctorRoleName))
             {
-                RemoveEmployee(user);
+                await RemoveEmployeeAsync(user);
             }
 
             return addRoles;
@@ -150,16 +150,16 @@ namespace Odontology.Business.Services
             _ = userRepository.UpdateAsync(user);
         }
 
-        private void RemoveEmployee(ApplicationUser user)
+        private async Task RemoveEmployeeAsync(ApplicationUser user)
         {
             if (user?.EmployeeId == null)
             {
                 throw new ArgumentException($"User with id {user.Id} does not have an employee to remove");
             }
 
-            _ = employeeRepository.DeleteAsync((int) user.EmployeeId);
+            _ = await employeeRepository.DeleteAsync((int) user.EmployeeId);
             user.EmployeeId = null;
-            _ = userRepository.UpdateAsync(user);
+            _ = await userRepository.UpdateAsync(user);
         }
 
 

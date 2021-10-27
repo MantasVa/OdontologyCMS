@@ -12,6 +12,6 @@ namespace Odontology.Business.Interfaces
 
         void AddOrEdit(ArticleCreateDto articleCreateDto);
 
-        void Delete(int id);
+        Task DeleteAsync(int id);
     }
 }

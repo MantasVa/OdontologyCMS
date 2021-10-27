@@ -59,5 +59,18 @@ namespace Odontology.Web.Infrastructure.Extensions
             dto.Files = viewModel.Files;
             return dto;
         }
+
+        public static EmployeeEditDto ToEmployeeEditDto(this EntityCreateViewModel<EmployeeEditViewModel> viewModel)
+        {
+            var mapConfig = TypeAdapterConfig<EntityCreateViewModel<EmployeeEditViewModel>, EmployeeEditDto>
+                .NewConfig()
+                .Map(dest => dest.EmployeeDetailedDto,
+                    src => src.EntityViewModel)
+                .Config;
+
+            var employeeEditDto = viewModel.Adapt<EmployeeEditDto>(mapConfig);
+            employeeEditDto.File = viewModel.EntityViewModel.File;
+            return employeeEditDto;
+        }
     }
 }

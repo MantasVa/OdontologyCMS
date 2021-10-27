@@ -16,7 +16,7 @@ namespace Odontology.Business.Interfaces
 
         Task<IdentityResult> AddUserAsync(ApplicationUser user, string password, string[] roles);
 
-        void Edit(UserCreateDto userCreateDto);
+        Task EditAsync(UserCreateDto userCreateDto);
 
         Task<IdentityResult> UpdateUserRolesAsync(string userId, string[] newRoles);
 

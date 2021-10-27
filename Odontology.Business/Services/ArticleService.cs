@@ -78,9 +78,9 @@ namespace Odontology.Business.Services
             }
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _ = articleRepository.DeleteAsync(id);
+            _ = await articleRepository.DeleteAsync(id);
         }
 
         private void DeleteArticleImages(int id)

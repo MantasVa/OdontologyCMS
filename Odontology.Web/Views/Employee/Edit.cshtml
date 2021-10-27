@@ -1,15 +1,15 @@
-﻿@model ArticleCreateViewModel
+﻿@model EntityCreateViewModel<EmployeeEditViewModel>
+
 @{
-    var createUpdateTitle = Model.ActionType == ActionTypeEnum.Create ? "parašyti įrašą" : Model.ActionType == ActionTypeEnum.Edit ? "redaguoti įrašą" : "";
-    ViewBag.Title = createUpdateTitle;
+    ViewBag.Title = "regaduoti darbuotoją";
     Layout = "_AdminLayout";
 }
 
 <div class="container">
     <div style="margin:10px">
-        <h1 class="mt-4">@createUpdateTitle</h1>
+        <h1 class="mt-4">Redaguoti darbuotojo informaciją</h1>
 
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             @{
                 var user = await userManager.GetUserAsync(User);
                 string editorName = $"{user.Name} {user.Surname}";
@@ -30,29 +30,33 @@
             <input type="hidden" asp-for="ActionType" />
 
             <div class="form-group top-margin">
-                <div><span asp-validation-for="EntityViewModel.Title" class="text-danger"></span></div>
-                <label asp-for="EntityViewModel.Title">Pavadinimas<span class="text-danger">*</span>:</label>
-                <input type="text" class="form-control" asp-for="EntityViewModel.Title" required />
+                <div><span asp-validation-for="EntityViewModel.Resume" class="text-danger"></span></div>
+                <label asp-for="EntityViewModel.Resume">Pavadinimas<span class="text-danger">*</span>:</label>
+                <textarea asp-for="EntityViewModel.Resume" class="form-control"></textarea>
             </div>
+            
+            @if (Model.EntityViewModel.Image != null)
+            {
+                <div>
+                    <p>Dabartinė nuotrauka</p>
+                    <img src="@Url.Action("Render", "Image", new { id = @Model.EntityViewModel.Image.Id })" alt="@Model.EntityViewModel.Image.CreatedOn" class="img-fluid">
+                </div>
+            }
+
 
             <div class="form-group top-margin">
-                <div><span asp-validation-for="EntityViewModel.Body" class="text-danger"></span></div>
-                <label asp-for="EntityViewModel.Body">Turinys<span class="text-danger">*</span>:</label>
-                <textarea asp-for="EntityViewModel.Body" class="form-control"></textarea>
-            </div>
-
-            <div class="form-group top-margin">
-                <label>Įkelti nuotraukas:</label>
-                <br />
-                <input type="file" asp-for="Files" multiple="multiple" />
+                <label>Įkelti naują nuotrauką:</label> 
+                <br/>
+                <input type="file" asp-for="EntityViewModel.File"/>
             </div>
 
             <div class="top-margin">
-                <button type="submit" class="btn btn-success">Sukurti</button>
+                <button type="submit" class="btn btn-success">Redaguoti</button>
             </div>
         </form>
     </div>
 </div>
+
 
 @section Head{
     <script src="https://cdn.tiny.cloud/1/ol12dz8pmm89a37ixbobmdt86ih6wrgzd4pqrjqzwil3ngd3/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>

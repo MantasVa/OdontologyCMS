@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Odontology.Business.DTO;
 
 namespace Odontology.Business.Interfaces
@@ -7,6 +8,10 @@ namespace Odontology.Business.Interfaces
     {
         IEnumerable<EmployeeDto> GetAll();
 
-        IEnumerable<EmployeeDetailedDto> GetAllDetailed();
+        IEnumerable<EmployeeDetailedDto> GetAllDetails();
+
+        EmployeeDetailedDto GetDetailsById(int id);
+
+        Task EditAsync(EmployeeEditDto employeeEditDto);
     }
 }

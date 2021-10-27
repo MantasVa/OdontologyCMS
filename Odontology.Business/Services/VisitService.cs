@@ -85,7 +85,7 @@ namespace Odontology.Business.Services
             return visitDtoList;
         }
 
-        public void AddOrEdit(VisitCreateDto visitCreateDto)
+        public async Task AddOrEditAsync(VisitCreateDto visitCreateDto)
         {
             if (visitCreateDto == null)
                 throw new ArgumentNullException(nameof(visitCreateDto));
@@ -97,7 +97,7 @@ namespace Odontology.Business.Services
                     visitRepository.Add(visit);
                     break;
                 case ActionTypeEnum.Edit:
-                    visitRepository.UpdateAsync(visit);
+                    await visitRepository.UpdateAsync(visit);
                     break;
                 default:
                     throw new ArgumentException("Action type is not valid", nameof(visitCreateDto));
@@ -114,9 +114,8 @@ namespace Odontology.Business.Services
         {
             var visit = await visitRepository.GetByIdAsync(id);
 
-            // Can only delete 
             _ = visit.DateTime > DateTime.UtcNow.AddHours(hoursTillVisitToModify)
-                ? visitRepository.DeleteAsync(id)
+                ? await visitRepository.DeleteAsync(id)
                 : throw new ArgumentException("Unable to delete visit");
         }
     }

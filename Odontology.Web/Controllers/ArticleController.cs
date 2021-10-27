@@ -80,7 +80,7 @@ namespace Odontology.Web.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            articleService.Delete(id);
+            articleService.DeleteAsync(id);
 
             return RedirectToAction(nameof(AdminList));
         }

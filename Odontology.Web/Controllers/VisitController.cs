@@ -100,7 +100,7 @@ namespace Odontology.Web.Controllers
 
             var visitDto = viewModel.ToVisitCreateDto(userIdString);
 
-            visitService.AddOrEdit(visitDto);
+            visitService.AddOrEditAsync(visitDto);
 
             return isAdmin ? RedirectToAction(nameof(AdminList)) : RedirectToAction(nameof(Index));
         }
