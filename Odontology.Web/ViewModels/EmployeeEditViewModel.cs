@@ -4,7 +4,7 @@ using Odontology.Business.DTO;
 
 namespace Odontology.Web.ViewModels
 {
-    public class EmployeeEditViewModel
+    public class EmployeeViewModel
     {
         public int Id { get; set; }
 

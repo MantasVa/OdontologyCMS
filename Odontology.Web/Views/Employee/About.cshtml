@@ -1,0 +1,39 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "apie mus";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4" style="margin:60px 0px 40px 0px;">Mūsų darbuotojų komanda</h1>
+    </div>
+    @foreach (var member in Model)
+    {
+        <div class="card mb-3">
+            <div class="row no-gutters">
+                @if (member.Images.Count > 0)
+                {
+                    <div class="col-auto">
+                        <img src="@Url.Action("Render", "Image", new { id = member.Images.First().Id })"
+                             alt="@member.Images.First().CreatedOn" width="200" height="200">
+                    </div>
+                }
+                else
+                {
+                    <div class="col-auto">
+                        <img src="//placehold.it/200" class="img-fluid" alt="">
+                    </div>
+                }
+
+                <div class="col">
+                    <div class="card-block px-2">
+                        <h4 class="card-title">@member.Title</h4>
+                        <p class="card-text">@Html.Raw(member.Body)</p>
+                        @*<a href="#" class="btn btn-primary">BUTTON</a>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
