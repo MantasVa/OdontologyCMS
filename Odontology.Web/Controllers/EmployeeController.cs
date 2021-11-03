@@ -19,6 +19,16 @@ namespace Odontology.Web.Controllers
             this.employeeService = employeeService;
         }
 
+        public IActionResult About()
+        {
+            var employees = employeeService.GetAllDetails();
+            
+            return View(new AboutViewModel
+            {
+                Employees = employees
+            });
+    }
+
         public IActionResult AdminList()
         {
             var employeesViewModel = employeeService.GetAll().Adapt<IEnumerable<EmployeeTableViewModel>>();

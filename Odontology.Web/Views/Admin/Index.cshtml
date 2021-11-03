@@ -1,8 +1,54 @@
-﻿@model dynamic
+﻿@model AdminIndexViewModel
 
 @{
     ViewBag.Title = "admin panelė";
     Layout = "_AdminLayout";
 }
 
-<h2>title</h2>
+<div id="layoutSidenav_content" class="top-margin">
+    <main>
+        <div class="container-fluid">
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Apžvalga</li>
+            </ol>
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-light mb-4">
+                        <div class="card-body text-center"><span class="display-4">@Model.ArticleCount</span> Straipsniai</div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                             <a class="small stretched-link" asp-controller="Article" asp-action="AdminList" >Plačiau</a>
+                             <div class="small"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-light mb-4">
+                        <div class="card-body text-center"><span class="display-4">@Model.UserCount</span> Vartotojai</div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small stretched-link" asp-controller="Authorization" asp-action="AdminList" >Plačiau</a>
+                            <div class="small"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-light mb-4">
+                        <div class="card-body text-center"><span class="display-4">@Model.EmployeeCount</span> Daktarai</div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small stretched-link" asp-controller="Employee" asp-action="AdminList" >Plačiau</a>
+                            <div class="small"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-light mb-4">
+                        <div class="card-body text-center"><span class="display-4">@Model.VisitCount</span> Vizitai ateityje</div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small stretched-link" asp-controller="Visit" asp-action="AdminList">Plačiau</a>
+                            <div class="small"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

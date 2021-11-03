@@ -1,7 +1,20 @@
 ﻿@{
-    ViewBag.Title = "Namai";
+    ViewBag.Title = "pradinis";
     Layout = "_Layout";
 }
-@{
-    <h1>hello</h1>
-}
+
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="~/img/dentist-index.jpg" class="d-block w-100 black-white-photo" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <h4>Dentmedic - moderni klinika Vilniuje</h4>
+                <h5>Dentmedic - modern clinic in Vilnius</h5>
+                <a class="btn btn-outline-light" asp-action="Registration" 
+                   asp-controller="Authorization">Prisijunk prie mūsų</a>
+                <a class="btn btn-outline-light" asp-action="About" 
+                   asp-controller="Employee">Sužinok daugiau</a>
+            </div>
+        </div>
+    </div>
+</div>

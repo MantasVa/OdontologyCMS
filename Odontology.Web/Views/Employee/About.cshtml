@@ -1,4 +1,4 @@
-﻿@model dynamic
+﻿@model AboutViewModel
 @{
     ViewBag.Title = "apie mus";
     Layout = "_Layout";
@@ -6,17 +6,17 @@
 
 <div class="container mt-5">
     <div class="text-center">
-        <h1 class="display-4" style="margin:60px 0px 40px 0px;">Mūsų darbuotojų komanda</h1>
+        <h1 class="display-6" style="margin:60px 0px 40px 0px;">Mūsų darbuotojų komanda</h1>
     </div>
-    @foreach (var member in Model)
+    @foreach (var employee in Model.Employees)
     {
         <div class="card mb-3">
             <div class="row no-gutters">
-                @if (member.Images.Count > 0)
+                @if (employee.Image != null)
                 {
                     <div class="col-auto">
-                        <img src="@Url.Action("Render", "Image", new { id = member.Images.First().Id })"
-                             alt="@member.Images.First().CreatedOn" width="200" height="200">
+                        <img src="@Url.Action("Render", "Image", new { id = employee.Image.Id })"
+                             alt="@employee.Image.CreatedOn" width="200" height="200">
                     </div>
                 }
                 else
@@ -28,9 +28,9 @@
 
                 <div class="col">
                     <div class="card-block px-2">
-                        <h4 class="card-title">@member.Title</h4>
-                        <p class="card-text">@Html.Raw(member.Body)</p>
-                        @*<a href="#" class="btn btn-primary">BUTTON</a>*@
+                        <h4 class="card-title">@employee.Name @employee.Surname</h4>
+                        <p class="card-title">@employee.Email</p>
+                        <p class="card-text">@Html.Raw(employee.Resume)</p>
                     </div>
                 </div>
             </div>

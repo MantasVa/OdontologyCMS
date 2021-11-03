@@ -36,7 +36,7 @@ namespace Odontology.Persistance.Repositories
             TEntity dbEntry = GetById(entity.Id);
             if (dbEntry == null) return entity;
             ApplicationDbContext.Entry(dbEntry).CurrentValues.SetValues(entity);
-            ApplicationDbContext.SaveChanges();
+            await ApplicationDbContext.SaveChangesAsync();
             return entity;
         }
 
@@ -45,7 +45,7 @@ namespace Odontology.Persistance.Repositories
             TEntity dbEntry = GetById(id);
             if (dbEntry == null) return dbEntry;
             Entities.Remove(dbEntry);
-            ApplicationDbContext.SaveChanges();
+            await ApplicationDbContext.SaveChangesAsync();
             return dbEntry;
         }
 
