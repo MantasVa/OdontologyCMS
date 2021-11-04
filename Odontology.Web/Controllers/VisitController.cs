@@ -86,7 +86,7 @@ namespace Odontology.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(VisitCreateViewModel viewModel)
+        public async Task<IActionResult> Create(VisitCreateViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -97,18 +97,17 @@ namespace Odontology.Web.Controllers
 
             var isAdmin = User.IsInRole(Role.Admin.ToDisplayName());
             var userIdString = isAdmin ? viewModel.UserId.ToString() : userManager.GetUserId(User);
-
             var visitDto = viewModel.ToVisitCreateDto(userIdString);
 
-            visitService.AddOrEditAsync(visitDto);
+            await visitService.AddOrEditAsync(visitDto);
 
             return isAdmin ? RedirectToAction(nameof(AdminList)) : RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            visitService.DeleteAsync(id);
+            await visitService.DeleteAsync(id);
 
             var isAdmin = User.IsInRole(Role.Admin.ToDisplayName());
             return isAdmin ? RedirectToAction(nameof(AdminList)) : RedirectToAction(nameof(Index));

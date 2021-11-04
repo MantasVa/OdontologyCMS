@@ -17,7 +17,7 @@
                                     <input type="hidden" asp-for="@Model.CreatedOn" value="@DateTime.UtcNow" />
                                     <div asp-validation-summary="All" class="text-danger"></div>
                                     <div class="form-row">
-                                        <div class="col-md-6">
+                                        <div class="col">
                                             <div class="form-group">
                                                 <div><span asp-validation-for="@Model.Name" class="text-danger"></span></div>
                                                 <label asp-for="@Model.Name" class="small mb-1" for="inputFirstName">Vardas<span class="text-danger">*</span></label>
@@ -25,7 +25,7 @@
                                                        type="text" placeholder="Vardas" required/>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col">
                                             <div class="form-group">
                                                 <div><span asp-validation-for="@Model.Surname" class="text-danger"></span></div>
                                                 <label asp-for="@Model.Surname" class="small mb-1" for="inputLastName">Pavardė<span class="text-danger">*</span></label>
@@ -45,7 +45,7 @@
                                                required/>
                                     </div>
                                     <div class="form-row">
-                                        <div class="col-md-6">
+                                        <div class="col">
                                             <div class="form-group">
                                                 <div><span asp-validation-for="@Model.Password" class="text-danger"></span></div>
                                                 <label asp-for="@Model.Password" class="small mb-1" for="inputPassword">Slaptažodis<span class="text-danger">*</span></label>
@@ -53,7 +53,7 @@
                                                        type="password" placeholder="Slaptažodis" required/>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col">
                                             <div class="form-group">
                                                 <div><span asp-validation-for="@Model.Password" class="text-danger"></span></div>
                                                 <label asp-for="@Model.ConfirmPassword" class="small mb-1" for="inputConfirmPassword">Patvirtinti slaptažodį<span class="text-danger">*</span></label>
@@ -63,7 +63,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group mt-4 mb-0"><input class="btn-success btn-block" type="submit" value="Patvirtinti"/></div>
+                                    <div class="form-group mt-4 mb-0"><input class="btn btn-success" type="submit" value="Patvirtinti"/></div>
                                 </form>
                             </div>
                             <div class="card-footer text-center">

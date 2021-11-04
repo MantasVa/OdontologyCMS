@@ -17,11 +17,9 @@ namespace Odontology.Web.Controllers
     [AutoValidateAntiforgeryToken]
     public class AuthorizationController : Controller
     {
-        private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IUserService userService;
         private readonly IRoleService roleService;
-        private readonly IEmployeeService employeeService;
 
         public AuthorizationController(UserManager<ApplicationUser> userManager,
                                        SignInManager<ApplicationUser> signInManager,
@@ -29,11 +27,9 @@ namespace Odontology.Web.Controllers
                                        IRoleService roleService,
                                        IEmployeeService employeeService)
         {
-            this.userManager = userManager;
             this.signInManager = signInManager;
             this.userService = userService;
             this.roleService = roleService;
-            this.employeeService = employeeService;
         }
 
         public IActionResult Registration() => View(new RegistrationViewModel());

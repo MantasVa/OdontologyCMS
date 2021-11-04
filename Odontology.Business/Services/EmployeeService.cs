@@ -31,7 +31,7 @@ namespace Odontology.Business.Services
             var employees =
                 from employee in employeeRepository.GetAllQuery()
                 join user in userRepository.GetAllQuery()
-                    on employee.Id equals user.Employee.Id
+                    on employee.Id equals user.EmployeeId
                 select new EmployeeDto
                 {
                     Id = employee.Id,

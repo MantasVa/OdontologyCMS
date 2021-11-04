@@ -8,7 +8,8 @@
 
     var upcomingVisits = Model.Where(x => x.DateTime > localTime).OrderBy(x => x.DateTime).ToList();
     var closestUpcomingVisit = upcomingVisits.Take(1).FirstOrDefault();
-
+    if(upcomingVisits.Any()) upcomingVisits.RemoveRange(0, 1);
+    
     var pastVisits = Model.Where(x => x.DateTime < localTime);
 }
 

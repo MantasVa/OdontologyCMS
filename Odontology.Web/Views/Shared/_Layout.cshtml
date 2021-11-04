@@ -1,5 +1,4 @@
-﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
-@inject SignInManager<ApplicationUser> signInManager
+﻿@inject SignInManager<ApplicationUser> signInManager
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,10 +34,13 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
-                    <li>
-                        <a asp-controller="Admin" asp-action="Index" class="nav-link">Admin Panelė</a>
-                    </li>
-                    <partial name="_LoginPartial"/>
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <li>
+                            <a asp-controller="Admin" asp-action="Index" class="nav-link">Admin Panelė</a>
+                        </li>
+                    }
+                    <partial name="_LoginPartial" />
                 </ul>
             </div>
         </nav>

@@ -80,7 +80,7 @@ namespace Odontology.Business.Services
 
             if (roles.Contains(Role.Doctor.ToDisplayName()))
             {
-                AddEmployee(await userManager.FindByEmailAsync(user.Email));
+                await AddEmployeeAsync(await userManager.FindByEmailAsync(user.Email));
             }
             
             return createResult;
@@ -118,7 +118,7 @@ namespace Odontology.Business.Services
             var doctorRoleName = Role.Doctor.ToDisplayName();
             if (!previousRoles.Contains(doctorRoleName) && newRoles.Contains(doctorRoleName))
             {
-                AddEmployee(user);
+                await AddEmployeeAsync(user);
             }
             else if (previousRoles.Contains(doctorRoleName) && !newRoles.Contains(doctorRoleName))
             {
@@ -133,12 +133,12 @@ namespace Odontology.Business.Services
             var user = await userManager.FindByIdAsync(id.ToString());
             if (user.EmployeeId != null)
             {
-                _ = employeeRepository.DeleteAsync((int)user.EmployeeId);
+                _ = await employeeRepository.DeleteAsync((int)user.EmployeeId);
             }
             _ = await userManager.DeleteAsync(user);
         }
 
-        private void AddEmployee(ApplicationUser user)
+        private async Task AddEmployeeAsync(ApplicationUser user)
         {
             if (user == null)
             {
@@ -147,7 +147,7 @@ namespace Odontology.Business.Services
 
             var employee = employeeRepository.Add(new Employee {CreatedOn = DateTime.UtcNow});
             user.EmployeeId = employee.Id;
-            _ = userRepository.UpdateAsync(user);
+            _ = await userRepository.UpdateAsync(user);
         }
 
         private async Task RemoveEmployeeAsync(ApplicationUser user)

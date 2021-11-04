@@ -35,7 +35,6 @@ namespace Odontology.Web.Controllers
             return View(employeesViewModel);
         }
 
-        [HttpGet]
         public IActionResult Edit(int id)
         {
             var employee = employeeService.GetDetailsById(id);
