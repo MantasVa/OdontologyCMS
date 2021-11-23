@@ -7,12 +7,11 @@ namespace Odontology.Web.Infrastructure.Attributes
     public class DateGreaterThanAttribute : ValidationAttribute
     {
         private readonly string errorMessage;
+        private readonly DateTime dateToCompareTo = DateTime.UtcNow;
         public DateGreaterThanAttribute(string errorMessage)
         {
             this.errorMessage = errorMessage;
         }
-
-        public DateTime DateToCompareTo { get; set; } = DateTime.UtcNow.AddDays(1);
 
         protected override ValidationResult IsValid(object value, ValidationContext context)
         {
@@ -23,7 +22,7 @@ namespace Odontology.Web.Infrastructure.Attributes
 
             var dateTime = (DateTime) value;
 
-            return dateTime > DateToCompareTo ? ValidationResult.Success : new ValidationResult(errorMessage);
+            return dateTime > dateToCompareTo ? ValidationResult.Success : new ValidationResult(errorMessage);
         }
     }
 }

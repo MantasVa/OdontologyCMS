@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Odontology.Business.DTO;
 using Odontology.Business.Infrastructure.Enums;
 using Odontology.Business.Interfaces;
 using Odontology.Web.Infrastructure.Extensions;
@@ -10,6 +10,7 @@ using Odontology.Web.ViewModels;
 namespace Odontology.Web.Controllers
 {
     [AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService employeeService;
@@ -19,6 +20,7 @@ namespace Odontology.Web.Controllers
             this.employeeService = employeeService;
         }
 
+        [AllowAnonymous]
         public IActionResult About()
         {
             var employees = employeeService.GetAllDetails();
@@ -27,7 +29,7 @@ namespace Odontology.Web.Controllers
             {
                 Employees = employees
             });
-    }
+        }
 
         public IActionResult AdminList()
         {

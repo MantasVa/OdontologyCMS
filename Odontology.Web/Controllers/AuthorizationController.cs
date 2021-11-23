@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Odontology.Business.Infrastructure.Enums;
@@ -15,26 +16,27 @@ using Odontology.Web.ViewModels;
 namespace Odontology.Web.Controllers
 {
     [AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
     public class AuthorizationController : Controller
     {
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IUserService userService;
         private readonly IRoleService roleService;
 
-        public AuthorizationController(UserManager<ApplicationUser> userManager,
-                                       SignInManager<ApplicationUser> signInManager,
+        public AuthorizationController(SignInManager<ApplicationUser> signInManager,
                                        IUserService userService,
-                                       IRoleService roleService,
-                                       IEmployeeService employeeService)
+                                       IRoleService roleService)
         {
             this.signInManager = signInManager;
             this.userService = userService;
             this.roleService = roleService;
         }
 
+        [AllowAnonymous]
         public IActionResult Registration() => View(new RegistrationViewModel());
         
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Registration(RegistrationViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -53,9 +55,11 @@ namespace Odontology.Web.Controllers
             return RedirectToAction(nameof(Login));
         }
 
+        [AllowAnonymous]
         public IActionResult Login() => View();
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -75,19 +79,20 @@ namespace Odontology.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Logout(string returnUrl = null)
         {
             await signInManager.SignOutAsync();
 
             return returnUrl != null ? LocalRedirect(returnUrl) : RedirectToPage(returnUrl);
         } 
-
+        
         public IActionResult AdminList()
         {
             var usersListViewModel = userService.GetAll().Adapt<IEnumerable<UserViewModel>>();
             return View(usersListViewModel);
         }
-
+        
         public IActionResult Create() => View(new UserCreateViewModel
                                               {
                                                   EntityViewModel = new RegistrationViewModel(),
@@ -114,7 +119,7 @@ namespace Odontology.Web.Controllers
 
             return RedirectToAction(nameof(AdminList));
         }
-
+        
         public IActionResult EditRoles(int id) => View(new ChangeRolesViewModel
         {
             UserId = id.ToString(),

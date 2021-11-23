@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Odontology.Business.Infrastructure.Enums;
@@ -15,6 +16,7 @@ using Odontology.Web.ViewModels;
 namespace Odontology.Web.Controllers
 {
     [AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
     public class VisitController : Controller
     {
         private readonly IVisitService visitService;
@@ -39,6 +41,7 @@ namespace Odontology.Web.Controllers
             return View(visitsViewModel);
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             var idString = userManager.GetUserId(User);
@@ -52,6 +55,7 @@ namespace Odontology.Web.Controllers
             return RedirectToAction("Error", "Home");
         }
 
+        [Authorize]
         public async Task<IActionResult> Details(int id)
         {
             var visitDto = await visitService.GetByIdAsync(id);
@@ -61,6 +65,7 @@ namespace Odontology.Web.Controllers
             return View(visit);
         }
 
+        [Authorize]
         public IActionResult Create() => View(new VisitCreateViewModel
         {
             EntityViewModel = new VisitViewModel(),
@@ -69,6 +74,7 @@ namespace Odontology.Web.Controllers
             UsersSelectEnumerable = userService.GetByRole(Role.User.ToDisplayName()).ToSelectListItemsEnumerable()
         });
 
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
             var visitDto = await visitService.GetByIdAsync(id);
@@ -86,6 +92,7 @@ namespace Odontology.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(VisitCreateViewModel viewModel)
         {
             if (!ModelState.IsValid)

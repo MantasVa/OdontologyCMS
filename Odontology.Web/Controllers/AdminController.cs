@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Odontology.Business.Interfaces;
 using Odontology.Web.ViewModels;
@@ -6,6 +7,7 @@ using Odontology.Web.ViewModels;
 namespace Odontology.Web.Controllers
 {
     [AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IEmployeeService employeeService;

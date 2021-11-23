@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Odontology.Business.Infrastructure.Enums;
 using Odontology.Business.Interfaces;
@@ -11,6 +12,7 @@ using Odontology.Web.ViewModels;
 namespace Odontology.Web.Controllers
 {
     [AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
     public class ArticleController : Controller
     {
         private readonly IArticleService articleService;
@@ -19,7 +21,7 @@ namespace Odontology.Web.Controllers
         {
             this.articleService = articleService;
         }
-
+        
         public IActionResult AdminList()
         {
             var articlesViewModel = articleService.GetAll().Adapt<IEnumerable<ArticleViewModel>>();
@@ -27,6 +29,7 @@ namespace Odontology.Web.Controllers
             return View(articlesViewModel);
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             var articlesViewModel = 
@@ -36,6 +39,7 @@ namespace Odontology.Web.Controllers
             return View(articlesViewModel);
         }
 
+        [Authorize(Roles = "User, Admin, Doctor")]
         public async Task<IActionResult> Details(int id)
         {
             var articleDto = await articleService.GetByIdAsync(id);

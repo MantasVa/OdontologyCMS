@@ -7,9 +7,8 @@ namespace Odontology.Web.ViewModels
     public class VisitViewModel
     {
         public int Id { get; set; }
-
-        [DateGreaterThan( "Vizito laikas turėtų būti bent viena kalendorine diena ateityje.")]
-        public DateTime DateTime { get; set; }
+        
+        public DateTime DateTime{ get; set; }
 
         public string Comment { get; set; }
 

@@ -17,6 +17,9 @@ namespace Odontology.Web.Infrastructure.Extensions
                     src => src.EntityViewModel)
                 .AfterMapping(v =>
                 {
+                    var date = viewModel.Date.Date;
+                    var time = viewModel.Time.TimeOfDay;
+                    v.Visit.DateTime = new DateTime(date.Year, date.Month, date.Day).Add(time);
                     if (currentUserId != null && int.TryParse(currentUserId, out int userId))
                     {
                         v.UserId = userId;

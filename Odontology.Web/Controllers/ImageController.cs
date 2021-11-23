@@ -1,9 +1,11 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Odontology.Business.Interfaces;
 
 namespace Odontology.Web.Controllers
 {
+    [AllowAnonymous]
     public class ImageController : Controller
     {
         private readonly IImageService imageService;

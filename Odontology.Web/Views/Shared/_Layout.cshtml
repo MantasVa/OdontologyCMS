@@ -1,12 +1,13 @@
 ﻿@inject SignInManager<ApplicationUser> signInManager
 <!DOCTYPE html>
-<html lang="en">
+<html lang="lt">
 <head>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
     <link href="~/css/site.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Dentmedic - @ViewBag.Title</title>
+    @await RenderSectionAsync("Head", required: false)
 </head>
 <body class="site-content html">
 
@@ -79,6 +80,7 @@
     
     <script src="https://kit.fontawesome.com/ba947858a4.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ" crossorigin="anonymous"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
 
