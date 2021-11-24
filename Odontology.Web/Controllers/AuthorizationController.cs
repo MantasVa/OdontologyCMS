@@ -16,27 +16,27 @@ using Odontology.Web.ViewModels;
 namespace Odontology.Web.Controllers
 {
     [AutoValidateAntiforgeryToken]
-    [Authorize(Roles = "Admin")]
     public class AuthorizationController : Controller
     {
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly IUserService userService;
         private readonly IRoleService roleService;
 
         public AuthorizationController(SignInManager<ApplicationUser> signInManager,
+                                       UserManager<ApplicationUser> userManager,
                                        IUserService userService,
                                        IRoleService roleService)
         {
             this.signInManager = signInManager;
+            this.userManager = userManager;
             this.userService = userService;
             this.roleService = roleService;
         }
 
-        [AllowAnonymous]
         public IActionResult Registration() => View(new RegistrationViewModel());
         
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> Registration(RegistrationViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -55,7 +55,6 @@ namespace Odontology.Web.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-        [AllowAnonymous]
         public IActionResult Login() => View();
 
         [HttpPost]
@@ -87,12 +86,14 @@ namespace Odontology.Web.Controllers
             return returnUrl != null ? LocalRedirect(returnUrl) : RedirectToPage(returnUrl);
         } 
         
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminList()
         {
             var usersListViewModel = userService.GetAll().Adapt<IEnumerable<UserViewModel>>();
             return View(usersListViewModel);
         }
         
+        [Authorize(Roles = "Admin")]
         public IActionResult Create() => View(new UserCreateViewModel
                                               {
                                                   EntityViewModel = new RegistrationViewModel(),
@@ -101,6 +102,7 @@ namespace Odontology.Web.Controllers
                                               });
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(UserCreateViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -120,6 +122,7 @@ namespace Odontology.Web.Controllers
             return RedirectToAction(nameof(AdminList));
         }
         
+        [Authorize(Roles = "Admin")]
         public IActionResult EditRoles(int id) => View(new ChangeRolesViewModel
         {
             UserId = id.ToString(),
@@ -127,6 +130,7 @@ namespace Odontology.Web.Controllers
         });
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditRoles(ChangeRolesViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -135,6 +139,9 @@ namespace Odontology.Web.Controllers
             }
 
             var addRoles = await userService.UpdateUserRolesAsync(viewModel.UserId, viewModel.RoleNames);
+
+            var user = await userManager.GetUserAsync(User);
+            await signInManager.SignInAsync(user, false);
             if (addRoles.Succeeded)
             {
                 return RedirectToAction(nameof(AdminList));
@@ -148,6 +155,7 @@ namespace Odontology.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             await userService.DeleteAsync(id);

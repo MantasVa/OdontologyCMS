@@ -1,5 +1,4 @@
-﻿@using Odontology.Web.Controllers
-@inject SignInManager<ApplicationUser> signInManager
+﻿@inject SignInManager<ApplicationUser> signInManager
 
 @if (signInManager.IsSignedIn(User))
 {
@@ -7,7 +6,7 @@
         <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Sveiki, @userManager.GetUserAsync(User).Result.Name!</a>
     </li>
     <li>
-        <form class="form-inline" asp-action="Logout" asp-controller="Authorization" asp-route-returnUrl="@Url.Action(nameof(HomeController.Index), "Home")">
+        <form class="form-inline" asp-action="Logout" asp-controller="Authorization" asp-route-returnUrl="@Url.Action("Index", "Home")">
             <button type="submit" class="btn btn-link">Atsijungti</button>
         </form>
     </li>

@@ -16,7 +16,6 @@ using Odontology.Web.ViewModels;
 namespace Odontology.Web.Controllers
 {
     [AutoValidateAntiforgeryToken]
-    [Authorize(Roles = "Admin")]
     public class VisitController : Controller
     {
         private readonly IVisitService visitService;
@@ -35,6 +34,7 @@ namespace Odontology.Web.Controllers
             this.userManager = userManager;
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminList()
         {
             var visitsViewModel = visitService.GetAll().Adapt<IEnumerable<VisitViewModel>>() ?? new List<VisitViewModel>();
@@ -46,13 +46,10 @@ namespace Odontology.Web.Controllers
         {
             var idString = userManager.GetUserId(User);
             var id = Convert.ToInt32(idString);
-            if (id > 0)
-            {
-                var visits = visitService.GetByPatientId(id).Adapt<IEnumerable<VisitViewModel>>();
-                return View(visits);
-            }
-
-            return RedirectToAction("Error", "Home");
+            if (id == 0) return RedirectToAction("Error", "Home");
+            
+            var visits = visitService.GetByPatientId(id).Adapt<IEnumerable<VisitViewModel>>();
+            return View(visits);
         }
 
         [Authorize]
@@ -65,7 +62,7 @@ namespace Odontology.Web.Controllers
             return View(visit);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create() => View(new VisitCreateViewModel
         {
             EntityViewModel = new VisitViewModel(),
@@ -74,7 +71,7 @@ namespace Odontology.Web.Controllers
             UsersSelectEnumerable = userService.GetByRole(Role.User.ToDisplayName()).ToSelectListItemsEnumerable()
         });
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var visitDto = await visitService.GetByIdAsync(id);
@@ -92,7 +89,7 @@ namespace Odontology.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(VisitCreateViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -110,8 +107,9 @@ namespace Odontology.Web.Controllers
 
             return isAdmin ? RedirectToAction(nameof(AdminList)) : RedirectToAction(nameof(Index));
         }
-
+        
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             await visitService.DeleteAsync(id);

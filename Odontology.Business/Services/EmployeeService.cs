@@ -86,7 +86,7 @@ namespace Odontology.Business.Services
                     UpdatedBy = employee.UpdatedBy
                 }).FirstOrDefault();
 
-            return employeeDto ?? throw new ArgumentException("Bad employe id");
+            return employeeDto ?? throw new ArgumentException("Bad employee id");
         }
 
         public async Task EditAsync(EmployeeEditDto employeeEditDto)

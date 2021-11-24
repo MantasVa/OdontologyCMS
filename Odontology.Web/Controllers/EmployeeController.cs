@@ -10,7 +10,6 @@ using Odontology.Web.ViewModels;
 namespace Odontology.Web.Controllers
 {
     [AutoValidateAntiforgeryToken]
-    [Authorize(Roles = "Admin")]
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService employeeService;
@@ -31,12 +30,14 @@ namespace Odontology.Web.Controllers
             });
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminList()
         {
             var employeesViewModel = employeeService.GetAll().Adapt<IEnumerable<EmployeeTableViewModel>>();
             return View(employeesViewModel);
         }
-
+        
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             var employee = employeeService.GetDetailsById(id);
@@ -49,6 +50,7 @@ namespace Odontology.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(EntityCreateViewModel<EmployeeEditViewModel> viewModel)
         {
             if (!ModelState.IsValid)

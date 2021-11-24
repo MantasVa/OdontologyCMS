@@ -1,4 +1,6 @@
-﻿@inject SignInManager<ApplicationUser> signInManager
+﻿@using Odontology.Common.Enums
+@using Odontology.Common
+@inject SignInManager<ApplicationUser> signInManager
 <!DOCTYPE html>
 <html lang="lt">
 <head>
@@ -35,13 +37,13 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
-                    @if (signInManager.IsSignedIn(User))
+                    @if (await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), Role.Admin.ToDisplayName()))
                     {
                         <li>
                             <a asp-controller="Admin" asp-action="Index" class="nav-link">Admin Panelė</a>
                         </li>
                     }
-                    <partial name="_LoginPartial" />
+                    <partial name="_LoginPartial"/>
                 </ul>
             </div>
         </nav>

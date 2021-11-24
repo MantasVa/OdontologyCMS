@@ -53,7 +53,7 @@ namespace Odontology.Web
               .AddDefaultTokenProviders()
               .AddUserStore<UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, int>> ()
               .AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, int>>();
-
+            
             services.AddRazorPages();
         }
 

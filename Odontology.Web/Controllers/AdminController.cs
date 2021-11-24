@@ -7,7 +7,6 @@ using Odontology.Web.ViewModels;
 namespace Odontology.Web.Controllers
 {
     [AutoValidateAntiforgeryToken]
-    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IEmployeeService employeeService;
@@ -24,6 +23,7 @@ namespace Odontology.Web.Controllers
             this.visitService = visitService;
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View(new AdminIndexViewModel

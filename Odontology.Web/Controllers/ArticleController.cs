@@ -12,7 +12,6 @@ using Odontology.Web.ViewModels;
 namespace Odontology.Web.Controllers
 {
     [AutoValidateAntiforgeryToken]
-    [Authorize(Roles = "Admin")]
     public class ArticleController : Controller
     {
         private readonly IArticleService articleService;
@@ -22,6 +21,7 @@ namespace Odontology.Web.Controllers
             this.articleService = articleService;
         }
         
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminList()
         {
             var articlesViewModel = articleService.GetAll().Adapt<IEnumerable<ArticleViewModel>>();
@@ -39,7 +39,7 @@ namespace Odontology.Web.Controllers
             return View(articlesViewModel);
         }
 
-        [Authorize(Roles = "User, Admin, Doctor")]
+        [Authorize]
         public async Task<IActionResult> Details(int id)
         {
             var articleDto = await articleService.GetByIdAsync(id);
@@ -48,12 +48,14 @@ namespace Odontology.Web.Controllers
             return View(article);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Create() => View(new ArticleCreateViewModel
         {
             EntityViewModel = new ArticleViewModel(),
             ActionType = ActionTypeEnum.Create
         });
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var articleDto = await articleService.GetByIdAsync(id);
@@ -67,6 +69,7 @@ namespace Odontology.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create(ArticleCreateViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -82,6 +85,7 @@ namespace Odontology.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             articleService.DeleteAsync(id);
