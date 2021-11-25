@@ -36,6 +36,7 @@
     <_ContentIncludedByDefault Remove="Views\Employee\Edit.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Home\Error.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Visit\AdminList.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Patient\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

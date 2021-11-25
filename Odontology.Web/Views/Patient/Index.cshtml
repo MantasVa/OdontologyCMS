@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Odontology.Business.DTO.VisitDto>
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid">
+            <div class="card mb-4 mt-5">
+                <div class="card-header"><i class="fas fa-table mr-1"></i>Jūsų pacientų vizitai</div>
+
+                @if (Model.Any())
+                {
+                    <div class="card-body">
+                    <a class="btn btn-outline-primary text-black-50" asp-controller="Visit" asp-action="Create"> Kurti Vizitą </a>
+                    <div class="table-responsive">
+                        <table class="table" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Vizito Laikas</th>
+                                    <th>Pacientas</th>
+                                    <th>Daktaras</th>
+                                    <th>Pridėtas</th>
+                                    <th>Daugiau</th>
+                                    <th>Redaguoti</th>
+                                    <th>Ištrinti</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var visit in Model)
+                                {
+                                    var createdOnLocalTime = visit.CreatedOn.ToLocalTime();
+                                <tr> 
+                                    <td>@visit.DateTime</td>
+                                    <td>@visit.Patient.Fullname</td>
+                                    <td>@visit.Employee.Fullname</td>
+                                    <td>@createdOnLocalTime</td>
+                                    <td>
+                                        <a class="btn btn-outline-primary text-black-50" asp-controller="Visit" asp-action="Details" asp-route-id="@visit.Id"> Daugiau </a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-outline-primary text-black-50" asp-controller="Visit" asp-action="Edit" asp-route-id="@visit.Id">Redaguoti</a>
+                                    </td>
+                                    <td>
+                                        <form method="post" asp-controller="Visit" asp-action="Delete" asp-route-id="@visit.Id">
+                                            <input type="submit" class="btn btn-outline-primary text-black-50"
+                                                   value="Naikinti" />
+                                        </form>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                }
+                else
+                {
+                    <p>Kolkas neturite jums užrašytų vizitų</p>
+                }
+                
+            </div>
+        </div>
+    </main>
+</div>

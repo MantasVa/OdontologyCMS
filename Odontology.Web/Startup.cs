@@ -54,6 +54,11 @@ namespace Odontology.Web
               .AddUserStore<UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, int>> ()
               .AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, int>>();
             
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Home/AccessDenied";
+            });
+            
             services.AddRazorPages();
         }
 
@@ -79,7 +84,7 @@ namespace Odontology.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

@@ -24,9 +24,9 @@ namespace Odontology.Web.Controllers
         private readonly UserManager<ApplicationUser> userManager;
 
         public VisitController(IVisitService visitService,
-                               IEmployeeService employeeService,
-                               IUserService userService,
-                               UserManager<ApplicationUser> userManager)
+            IEmployeeService employeeService,
+            IUserService userService,
+            UserManager<ApplicationUser> userManager)
         {
             this.visitService = visitService;
             this.employeeService = employeeService;
@@ -37,7 +37,8 @@ namespace Odontology.Web.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult AdminList()
         {
-            var visitsViewModel = visitService.GetAll().Adapt<IEnumerable<VisitViewModel>>() ?? new List<VisitViewModel>();
+            var visitsViewModel = visitService.GetAll().Adapt<IEnumerable<VisitViewModel>>() ??
+                                  new List<VisitViewModel>();
             return View(visitsViewModel);
         }
 
@@ -46,8 +47,7 @@ namespace Odontology.Web.Controllers
         {
             var idString = userManager.GetUserId(User);
             var id = Convert.ToInt32(idString);
-            if (id == 0) return RedirectToAction("Error", "Home");
-            
+
             var visits = visitService.GetByPatientId(id).Adapt<IEnumerable<VisitViewModel>>();
             return View(visits);
         }
@@ -62,22 +62,29 @@ namespace Odontology.Web.Controllers
             return View(visit);
         }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult Create() => View(new VisitCreateViewModel
+        [Authorize(Roles = "Admin,Doctor,User")]
+        public IActionResult Create()
         {
-            EntityViewModel = new VisitViewModel(),
-            ActionType = ActionTypeEnum.Create,
-            EmployeesSelectEnumerable = employeeService.GetAll().ToSelectListItemsEnumerable(),
-            UsersSelectEnumerable = userService.GetByRole(Role.User.ToDisplayName()).ToSelectListItemsEnumerable()
-        });
+            var viewmodel = new VisitCreateViewModel
+            {
+                EntityViewModel = new VisitViewModel(),
+                ActionType = ActionTypeEnum.Create,
+                EmployeesSelectEnumerable = employeeService.GetAll().ToSelectListItemsEnumerable(),
+                UsersSelectEnumerable = userService.GetByRole(Role.User.ToDisplayName()).ToSelectListItemsEnumerable()
+            };
+            
+            return View(viewmodel);
+        }
 
-        [Authorize(Roles = "Admin")]
+       
+
+        [Authorize(Roles = "Admin,Doctor,User")]
         public async Task<IActionResult> Edit(int id)
         {
             var visitDto = await visitService.GetByIdAsync(id);
             var visit = visitDto.Adapt<VisitViewModel>();
 
-            return View(nameof(Create),new VisitCreateViewModel
+            return View(nameof(Create), new VisitCreateViewModel
             {
                 EntityViewModel = visit,
                 ActionType = ActionTypeEnum.Edit,
@@ -89,13 +96,14 @@ namespace Odontology.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Doctor,User")]
         public async Task<IActionResult> Create(VisitCreateViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
                 viewModel.EmployeesSelectEnumerable = employeeService.GetAll().ToSelectListItemsEnumerable();
-                viewModel.UsersSelectEnumerable = userService.GetByRole(Role.User.ToDisplayName()).ToSelectListItemsEnumerable();
+                viewModel.UsersSelectEnumerable =
+                    userService.GetByRole(Role.User.ToDisplayName()).ToSelectListItemsEnumerable();
                 return View(viewModel);
             }
 
@@ -107,9 +115,9 @@ namespace Odontology.Web.Controllers
 
             return isAdmin ? RedirectToAction(nameof(AdminList)) : RedirectToAction(nameof(Index));
         }
-        
+
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Doctor,User")]
         public async Task<IActionResult> Delete(int id)
         {
             await visitService.DeleteAsync(id);

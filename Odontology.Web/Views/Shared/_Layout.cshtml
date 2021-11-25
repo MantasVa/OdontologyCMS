@@ -6,83 +6,92 @@
 <head>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
-    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Dentmedic - @ViewBag.Title</title>
     @await RenderSectionAsync("Head", required: false)
 </head>
 <body class="site-content html">
+            @{
+                var isSignedIn = signInManager.IsSignedIn(User);
+                var user = await userManager.GetUserAsync(User);
 
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" asp-controller="Home" asp-action="Index">Dentmedic</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-md-between" id="navbarNav">
-                <ul class="navbar-nav">
-                    @if (signInManager.IsSignedIn(User))
-                    {
-                        <li class="nav-item">
-                            <a asp-action="Index" asp-controller="Article" class="nav-link">Naujienos</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a asp-action="Index" asp-controller="Visit" class="nav-link">Vizitai</a>
-                        </li>
-
-                    }
+            }
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" asp-controller="Home" asp-action="Index">Dentmedic</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-md-between" id="navbarNav">
+            <ul class="navbar-nav">
+                @if (isSignedIn)
+                {
                     <li class="nav-item">
-                        <a asp-controller="Employee" asp-action="About" class="nav-link">Apie Mus</a>
+                        <a asp-action="Index" asp-controller="Article" class="nav-link">Naujienos</a>
                     </li>
-                </ul>
-                <ul class="navbar-nav">
-                    @if (await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), Role.Admin.ToDisplayName()))
+
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Visit" class="nav-link">Vizitai</a>
+                    </li>
+                    @if (await userManager.IsInRoleAsync(user, Role.Doctor.ToDisplayName()))
                     {
-                        <li>
-                            <a asp-controller="Admin" asp-action="Index" class="nav-link">Admin Panelė</a>
-                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Patient" class="nav-link">Pacientai</a>
+                        </li> 
                     }
-                    <partial name="_LoginPartial"/>
-                </ul>
-            </div>
-        </nav>
-    </header>
-
-    <div>
-        @RenderBody()
-    </div>
-
-    <footer class="pt-4 my-md-5 pt-md-5 border-top container">
-        <div class="row">
-            <div class="col-sm ml-5">
-                <p>
-                    Copyright &copy; 2021, Dentmedic
-                </p>
-
-            </div>
-            <div class="col-sm ml-5">
-                <p>Kontaktai:</p>
-                <p>El.Paštas: dentmedic@gmail.com</p>
-                <p>Adresas : Žirmūnų g. 2, Vilnius.</p>
-            </div>
-            <div class="col-sm ml-5">
-                <p>
-                    Mus galite rasti facebook: <a href="https://www.facebook.com/Lietuvosktd/" target="_blank">
-                        <ion-icon name="logo-facebook" class="facebook-icon"></ion-icon>
-                    </a>
-                </p>
-
-                <p>
-                    <a asp-action="Privacy" asp-controller="Home" class="nav-link">Privatumo politika</a>
-                </p>
-            </div>
+                }
+                <li class="nav-item">
+                    <a asp-controller="Employee" asp-action="About" class="nav-link">Apie Mus</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                @if (isSignedIn && await userManager.IsInRoleAsync(user, Role.Admin.ToDisplayName()))
+                {
+                    <li>
+                        <a asp-controller="Admin" asp-action="Index" class="nav-link">Admin Panelė</a>
+                    </li>
+                }
+                <partial name="_LoginPartial"/>
+            </ul>
         </div>
-    </footer>
-    
-    <script src="https://kit.fontawesome.com/ba947858a4.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ" crossorigin="anonymous"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    </nav>
+</header>
+
+<div>
+    @RenderBody()
+</div>
+
+<footer class="pt-4 my-md-5 pt-md-5 border-top container">
+    <div class="row">
+        <div class="col-sm ml-5">
+            <p>
+                Copyright &copy; 2021, Dentmedic
+            </p>
+
+        </div>
+        <div class="col-sm ml-5">
+            <p>Kontaktai:</p>
+            <p>El.Paštas: dentmedic@gmail.com</p>
+            <p>Adresas : Žirmūnų g. 2, Vilnius.</p>
+        </div>
+        <div class="col-sm ml-5">
+            <p>
+                Mus galite rasti facebook:
+                <a href="https://www.facebook.com/Lietuvosktd/" target="_blank">
+                    <ion-icon name="logo-facebook" class="facebook-icon"></ion-icon>
+                </a>
+            </p>
+
+            <p>
+                <a asp-action="Privacy" asp-controller="Home" class="nav-link">Privatumo politika</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://kit.fontawesome.com/ba947858a4.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ" crossorigin="anonymous"></script>
+@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-

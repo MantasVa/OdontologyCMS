@@ -10,6 +10,8 @@ namespace Odontology.Business.Interfaces
 
         IEnumerable<VisitDto> GetByPatientId(int userId);
 
+        IEnumerable<VisitDto> GetByEmployeeId(int employeeUserId);
+
         IEnumerable<VisitDto> GetAll();
 
         Task AddOrEditAsync(VisitCreateDto visitDto);

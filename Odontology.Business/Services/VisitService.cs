@@ -36,13 +36,49 @@ namespace Odontology.Business.Services
 
         public IEnumerable<VisitDto> GetByPatientId(int patientId)
         {
+            if (patientId == 0) throw new ArgumentException("User id is incorrect", nameof(patientId));
+            
             return 
                 from visit in visitRepository.GetAllQuery()
                 join userEmployee in userRepository.GetAllQuery()
-                    on visit.EmployeeId equals userEmployee.Id
+                    on visit.EmployeeId equals userEmployee.EmployeeId
                 join userPatient in userRepository.GetAllQuery()
                     on visit.Patient.Id equals userPatient.Id
                 where visit.Patient.Id == patientId
+                select new VisitDto
+                {
+                    Id = visit.Id,
+                    DateTime = visit.DateTime,
+                    Employee = new EmployeeDto
+                    {
+                        Id = userEmployee.Id,
+                        Name = userEmployee.Name,
+                        Surname = userEmployee.Surname
+                    },
+                    Patient = new UserNameDto
+                    {
+                        Id = userPatient.Id,
+                        Name = userPatient.Name,
+                        Surname = userPatient.Surname
+                    },
+                    CreatedBy = visit.CreatedBy,
+                    CreatedOn = visit.CreatedOn,
+                    UpdatedBy = visit.UpdatedBy,
+                    UpdatedOn = visit.UpdatedOn
+                };
+        }
+
+        public IEnumerable<VisitDto> GetByEmployeeId(int employeeUserId)
+        {
+            if (employeeUserId == 0) throw new ArgumentException("Employee id is incorrect", nameof(employeeUserId));
+            
+            return 
+                from visit in visitRepository.GetAllQuery()
+                join userEmployee in userRepository.GetAllQuery()
+                    on visit.EmployeeId equals userEmployee.EmployeeId
+                join userPatient in userRepository.GetAllQuery()
+                    on visit.Patient.Id equals userPatient.Id
+                where userEmployee.Id == employeeUserId
                 select new VisitDto
                 {
                     Id = visit.Id,

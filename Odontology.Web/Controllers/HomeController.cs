@@ -11,6 +11,8 @@ namespace Odontology.Web.Controllers
         
         public IActionResult Privacy() => View();
 
+        public IActionResult AccessDenied() => View();
+
         public IActionResult Error() => View();
     }
 }
