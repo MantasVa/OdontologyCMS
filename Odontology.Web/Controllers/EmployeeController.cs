@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,9 +32,20 @@ namespace Odontology.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminList()
+        public IActionResult AdminList(string name = null, string email = null)
         {
             var employeesViewModel = employeeService.GetAll().Adapt<IEnumerable<EmployeeTableViewModel>>();
+
+            if (name != null)
+            {
+                employeesViewModel = employeesViewModel.Where(x => $"{x.Name} {x.Surname}".ToLower().Contains(name.ToLower()));
+            }
+
+            if (email != null)
+            {
+                employeesViewModel = employeesViewModel.Where(x => x.Email.ToLower().Contains(email.ToLower()));
+            }
+            
             return View(employeesViewModel);
         }
         

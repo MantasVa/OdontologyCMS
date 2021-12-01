@@ -11,7 +11,32 @@
                 <div class="card-header"><i class="fas fa-table mr-1"></i>Naujienų sąrašas</div>
 
                 <div class="card-body">
-                    <a class="btn btn-outline-primary text-black-50" asp-action="Create"> Kurti Naujieną </a>
+                
+                    <div class="input-group" style="justify-content: space-around">
+                        <form method="get" asp-action="AdminList" style="display: flex">
+                            <input type="search" class="form-control rounded" placeholder="Ieškoti pagal pavadinimą" aria-label="paieška"
+                                   aria-describedby="paieškos-pagal-pavadinimą" name="title"/>
+                    
+                            <input type="search" class="form-control rounded" placeholder="Ieškoti pagal autorių" aria-label="paieška"
+                                   aria-describedby="paieškos-pagal-autorių" name="author"/>
+                    
+                            <button class="btn btn-block">
+                                <span class="input-group-text border-0" id="search-addon">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                            </button>
+                            <form method="get" asp-action="AdminList">
+                                <button class="btn btn-block">
+                                    <span class="input-group-text border-0" id="clear-addon">
+                                        <i class="fas fa-ban"></i>
+                                    </span>
+                                </button>
+                            </form>
+                        </form>
+                        
+                        <a class="btn btn-outline-primary text-black-50" asp-action="Create"> Kurti Naujieną </a>
+                    </div>
+                    
                     <div class="table-responsive">
                         <table class="table" id="dataTable" width="100%" cellspacing="0">
                             <thead>

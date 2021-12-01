@@ -87,9 +87,20 @@ namespace Odontology.Web.Controllers
         } 
         
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminList()
+        public IActionResult AdminList(string name = null, string email = null)
         {
             var usersListViewModel = userService.GetAll().Adapt<IEnumerable<UserViewModel>>();
+            
+            if (name != null)
+            {
+                usersListViewModel = usersListViewModel.Where(x => $"{x.Name} {x.Surname}".ToLower().Contains(name.ToLower()));
+            }
+
+            if (email != null)
+            {
+                usersListViewModel = usersListViewModel.Where(x => x.Email.ToLower().Contains(email.ToLower()));
+            }
+            
             return View(usersListViewModel);
         }
         

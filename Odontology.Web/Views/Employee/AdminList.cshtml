@@ -12,29 +12,53 @@
                 <div class="card-header"><i class="fas fa-table mr-1"></i>Darbuotojai</div>
 
                 <div class="card-body">
+                    
+                    <div class="input-group" style="justify-content: space-around">
+                        <form method="get" asp-action="AdminList" style="display: flex">
+                            <input type="search" class="form-control rounded" placeholder="Ieškoti pagal vardą" aria-label="paieška"
+                                   aria-describedby="paieškos-pagal-vardą" name="name"/>
+                            
+                            <input type="search" class="form-control rounded" placeholder="Ieškoti pagal el.paštą" aria-label="paieška"
+                                   aria-describedby="paieškos-pagal-paštą" name="email"/>
+                            
+                            <button class="btn btn-block">
+                                <span class="input-group-text border-0" id="search-addon">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                            </button>
+                            <form method="get" asp-action="AdminList">
+                                <button class="btn btn-block"> 
+                                    <span class="input-group-text border-0" id="search-addon">
+                                        <i class="fas fa-ban"></i>
+                                    </span>
+                                </button>
+                            </form>
+                        </form>
+                    </div>
+                    
                     <div class="table-responsive">
                         <table class="table" id="dataTable" width="100%" cellspacing="0">
                             <thead>
-                                <tr>
-                                    <th>Vardas</th>
-                                    <th>El. paštas</th>
-                                    <th>Veiksmai</th>
-                                </tr>
+                            <tr>
+                                <th>Vardas</th>
+                                <th>El. paštas</th>
+                                <th>Veiksmai</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (var employee in Model)
-                                {
-                                    <tr>
-                                        <td>@employee.Name @employee.Surname</td>
-                                        <td>@employee.Email</td>
-                                        <td>
-                                            <div>
-                                                <a class="btn list-button" asp-action="Details" asp-route-id="@employee.Id"><i class="fas fa-info-circle"></i></a>
-                                                <a class="btn list-button" asp-action="Edit" asp-route-id="@employee.Id"><i class="fas fa-edit"></i></a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
+                            @foreach (var employee in Model)
+                            {
+                                <tr>
+                                    <td>@employee.Name @employee.Surname</td>
+                                    <td>@employee.Email</td>
+                                    <td>
+                                        <div>
+                                            <a class="btn list-button" asp-action="Details" asp-route-id="@employee.Id"><i class="fas fa-info-circle"></i></a>
+                                            <a class="btn list-button" asp-action="Edit" asp-route-id="@employee.Id"><i class="fas fa-edit"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>

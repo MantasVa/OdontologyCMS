@@ -22,9 +22,19 @@ namespace Odontology.Web.Controllers
         }
         
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminList()
+        public IActionResult AdminList(string title = null, string author = null)
         {
             var articlesViewModel = articleService.GetAll().Adapt<IEnumerable<ArticleViewModel>>();
+            
+            if (title != null)
+            {
+                articlesViewModel = articlesViewModel.Where(x => x.Title.ToLower().Contains(title.ToLower()));
+            }
+
+            if (author != null)
+            {
+                articlesViewModel = articlesViewModel.Where(x => x.CreatedBy.ToLower().Contains(author.ToLower()));
+            }
 
             return View(articlesViewModel);
         }
