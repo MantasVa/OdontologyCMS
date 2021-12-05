@@ -1,49 +1,72 @@
-﻿@model IEnumerable<VisitViewModel>
+﻿@model VisitAdminIndexViewModel
 
 @{
     ViewBag.Title = "naudotojų vizitai";
     Layout = "_AdminLayout";
 }
 
-<h2>Naudotojų Vizitai</h2>
-
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid">
             <div class="card mb-4 mt-5">
-                <div class="card-header"><i class="fas fa-table mr-1"></i>Naujienų sąrašas</div>
+                <div class="card-header"><i class="fas fa-table mr-1"></i>Naudotojų Vizitai</div>
 
                 <div class="card-body">
-                    <a class="btn btn-outline-primary text-black-50" asp-action="Create"> Kurti Vizitą </a>
+                    @* Table search&create toolbar  *@
+                    <div class="input-group" style="justify-content: space-around">
+                        <form method="get" asp-action="AdminList" style="display: flex">
+                            <input type="search" class="form-control rounded" placeholder="Ieškoti pagal pacientą" aria-label="paieška"
+                                   aria-describedby="paieškos-pagal-pacientą" name="patient"/>
+
+                            <input type="search" class="form-control rounded" placeholder="Ieškoti pagal daktarą" aria-label="paieška"
+                                   aria-describedby="paieškos-pagal-daktarą" name="doctor"/>
+
+                            <button class="btn btn-block">
+                                <span class="input-group-text border-0" id="search-addon">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                            </button>
+                            <form method="get" asp-action="AdminList">
+                                <button class="btn btn-block">
+                                    <span class="input-group-text border-0" id="clear-addon">
+                                        <i class="fas fa-ban"></i>
+                                    </span>
+                                </button>
+                            </form>
+                        </form>
+
+                        <a class="btn btn-outline-primary text-black-50" asp-action="Create"> Kurti Vizitą </a>
+                    </div>
+                    
                     <div class="table-responsive">
                         <table class="table" id="dataTable" width="100%" cellspacing="0">
                             <thead>
-                                <tr>
-                                    <th>Vizito Laikas</th>
-                                    <th>Pacientas</th>
-                                    <th>Daktaras</th>
-                                    <th>Pridėtas</th>
-                                    <th>Daugiau</th>
-                                    <th>Redaguoti</th>
-                                    <th>Ištrinti</th>
-                                </tr>
+                            <tr>
+                                <th>Vizito Laikas</th>
+                                <th>Pacientas</th>
+                                <th>Daktaras</th>
+                                <th>Pridėtas</th>
+                                <th>Daugiau</th>
+                                <th>Redaguoti</th>
+                                <th>Ištrinti</th>
+                            </tr>
                             </thead>
                             <tfoot>
-                                <tr>
-                                    <th>Vizito Laikas</th>
-                                    <th>Pacientas</th>
-                                    <th>Daktaras</th>
-                                    <th>Pridėtas</th>
-                                    <th>Daugiau</th>
-                                    <th>Redaguoti</th>
-                                    <th>Ištrinti</th>
-                                </tr>
+                            <tr>
+                                <th>Vizito Laikas</th>
+                                <th>Pacientas</th>
+                                <th>Daktaras</th>
+                                <th>Pridėtas</th>
+                                <th>Daugiau</th>
+                                <th>Redaguoti</th>
+                                <th>Ištrinti</th>
+                            </tr>
                             </tfoot>
                             <tbody>
-                                @foreach (var visit in Model)
-                                {
-                                    var createdOnLocalTime = visit.CreatedOn.ToLocalTime();
-                                <tr> 
+                            @foreach (var visit in Model.Visits)
+                            {
+                                var createdOnLocalTime = visit.CreatedOn.ToLocalTime();
+                                <tr>
                                     <td>@visit.DateTime</td>
                                     <td>@visit.Patient.Fullname</td>
                                     <td>@visit.Employee.Fullname</td>
@@ -57,11 +80,11 @@
                                     <td>
                                         <form method="post" asp-action="Delete" asp-route-id="@visit.Id">
                                             <input type="submit" class="btn btn-outline-primary text-black-50"
-                                                   value="Naikinti" />
+                                                   value="Naikinti"/>
                                         </form>
                                     </td>
                                 </tr>
-                                }
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -69,4 +92,82 @@
             </div>
         </div>
     </main>
+
+    @* Paging *@
+    <section style="margin-top:40px;">
+        <ul class="pagination justify-content-center">
+            @if (Model.PagingInfo.CurrentPage > 1)
+            {
+                int previousPage = Model.PagingInfo.CurrentPage - 1;
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-action="AdminList" asp-route-pageNumber="@previousPage"
+                       asp-route-title="@Context.Request.Query["patient"]"
+                       asp-route-author="@Context.Request.Query["doctor"]"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+            }
+
+            @for (int i = 0; i < Model.PagingInfo.TotalPages; i++)
+            {
+                int pageNumber = i + 1;
+                @if (pageNumber == Model.PagingInfo.CurrentPage)
+                {
+                    <li class="page-item  active">
+                        <a class="page-link"
+                           asp-action="AdminList" asp-route-pageNumber="@pageNumber"
+                           asp-route-title="@Context.Request.Query["patient"]"
+                           asp-route-author="@Context.Request.Query["doctor"]">
+                            @pageNumber
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-action="AdminList" asp-route-pageNumber="@pageNumber"
+                           asp-route-title="@Context.Request.Query["patient"]"
+                           asp-route-author="@Context.Request.Query["doctor"]">
+                            @pageNumber
+                        </a>
+                    </li>
+                }
+            }
+            @if (Model.PagingInfo.CurrentPage < Model.PagingInfo.TotalPages)
+            {
+                int nextPage = Model.PagingInfo.CurrentPage + 1;
+                <li class="page-item">
+                    <a class="page-link" aria-label="Next"
+                       asp-action="AdminList" asp-route-pageNumber="@nextPage"
+                       asp-route-title="@Context.Request.Query["patient"]"
+                       asp-route-author="@Context.Request.Query["doctor"]">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </section>
 </div>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
@@ -22,6 +23,7 @@ namespace Odontology.Web.Controllers
         private readonly IEmployeeService employeeService;
         private readonly IUserService userService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly int itemsPerPage = 10;
 
         public VisitController(IVisitService visitService,
             IEmployeeService employeeService,
@@ -35,11 +37,34 @@ namespace Odontology.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminList()
+        public IActionResult AdminList(int pageNumber = 1, string patient = null, string doctor = null)
         {
             var visitsViewModel = visitService.GetAll().Adapt<IEnumerable<VisitViewModel>>() ??
                                   new List<VisitViewModel>();
-            return View(visitsViewModel);
+            
+            if (patient != null)
+            {
+                visitsViewModel = visitsViewModel.Where(x => x.Patient.Fullname.ToLower().Contains(patient.ToLower()));
+            }
+
+            if (doctor != null)
+            {
+                visitsViewModel = visitsViewModel.Where(x => x.Employee.Fullname.ToLower().Contains(doctor.ToLower()));
+            }
+            
+            var pageVisits = visitsViewModel.OrderByDescending(x => x.CreatedOn)
+                .Skip((pageNumber - 1) * itemsPerPage)
+                .Take(itemsPerPage).ToList();
+            
+            return View(new VisitAdminIndexViewModel
+            {
+                Visits = pageVisits,
+                PagingInfo = new PagingViewModel
+                {
+                    CurrentPage = pageNumber,
+                    TotalPages = (int)Math.Ceiling((double)visitsViewModel.Count() / itemsPerPage)
+                }
+            });
         }
 
         [Authorize]

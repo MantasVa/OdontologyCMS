@@ -3,6 +3,7 @@
     public enum ActionTypeEnum
     {
         Create = 0,
-        Edit = 1
+        Edit = 1,
+        Delete = 2
     }
 }

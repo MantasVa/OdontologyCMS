@@ -49,7 +49,7 @@ namespace Odontology.Business.Services
                 });
         }
 
-        public void AddOrEdit(ArticleCreateDto articleCreateDto)
+        public async Task AddOrEditAsync(ArticleCreateDto articleCreateDto)
         {
             var article = articleCreateDto.Article.Adapt<Article>();
             if (articleCreateDto.Files?.Count() > 0)
@@ -63,7 +63,7 @@ namespace Odontology.Business.Services
                     _ = articleRepository.Add(article);
                     break;
                 case ActionTypeEnum.Edit:
-                    DeleteArticleImages(article.Id);
+                    await DeleteArticleImages(article.Id);
                     if (article.Images != null)
                     {
                         foreach (var articleImage in article.Images)
@@ -71,7 +71,7 @@ namespace Odontology.Business.Services
                             imageRepository.Add(articleImage);
                         }
                     }
-                    _ = articleRepository.UpdateAsync(article);
+                    _ = await articleRepository.UpdateAsync(article);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -83,11 +83,14 @@ namespace Odontology.Business.Services
             _ = await articleRepository.DeleteAsync(id);
         }
 
-        private void DeleteArticleImages(int id)
+        private async Task DeleteArticleImages(int id)
         {
             var articleImages = imageRepository.GetAllQuery().Where(x => x.ArticleId == id).ToList();
 
-            articleImages.ForEach(async x => await imageRepository.DeleteAsync(x.Id));
+            foreach (var image in articleImages)
+            {
+                await imageRepository.DeleteAsync(image.Id);
+            }
         }
 
         private static ICollection<Image> ConvertToArticleImages(IEnumerable<IFormFile> files, int articleId)

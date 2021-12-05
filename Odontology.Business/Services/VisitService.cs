@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Mapster;
 using Odontology.Business.DTO;
+using Odontology.Business.Helpers;
 using Odontology.Business.Infrastructure.Enums;
 using Odontology.Business.Infrastructure.Extensions;
 using Odontology.Business.Interfaces;
@@ -137,8 +138,8 @@ namespace Odontology.Business.Services
                     break;
                 default:
                     throw new ArgumentException("Action type is not valid", nameof(visitCreateDto));
-
             }
+            await SendClientEmailAboutVisitAsync(visitCreateDto.ActionType, visit.PatientId, visit.DateTime);
         }
 
         /// <summary>
@@ -153,6 +154,32 @@ namespace Odontology.Business.Services
             _ = visit.DateTime > DateTime.UtcNow.AddHours(hoursTillVisitToModify)
                 ? await visitRepository.DeleteAsync(id)
                 : throw new ArgumentException("Unable to delete visit");
+            
+            await SendClientEmailAboutVisitAsync(ActionTypeEnum.Delete, visit.PatientId, visit.DateTime);
+        }
+
+        private async Task SendClientEmailAboutVisitAsync(ActionTypeEnum actionType, int patientId, DateTime date)
+        {
+            var patient = await userRepository.GetByIdAsync(patientId);
+            
+            string subject = "Vizitas Dentmedic";
+            string body = "";
+            switch (actionType)
+            {
+                case ActionTypeEnum.Create:
+                    body = $"Jums buvo sukurtas naujas vizitas Dentmedic klinikoje. Vizito laikas: {date.ToString("MM/dd/yyyy HH:mm")}";
+                    break;
+                case ActionTypeEnum.Edit:
+                    body = $"Jūsų vizitas Dentmedic klinikoje buvo redaguotas. Vizito laikas: {date.ToString("MM/dd/yyyy HH:mm")}";
+                    break;
+                case ActionTypeEnum.Delete:
+                    body = $"Jūsų vizitas {date.ToString("MM/dd/yyyy HH:mm")}  Dentmedic klinikoje buvo panaikintas.";
+                    break;
+                default:
+                    throw new ArgumentException("Action type is not valid", nameof(actionType));
+            }
+
+            EmailHelper.Send(patient.Email, subject, body);
         }
     }
 }

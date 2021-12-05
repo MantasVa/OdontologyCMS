@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Odontology.Business.Helpers
 {
-    public static class ImageHelper
+    internal static class ImageHelper
     {
         private static readonly List<string> AllowedContentType = new(){ "image/png", "image/jpeg" };
         public static List<byte[]> ConvertToBytes(this IEnumerable<IFormFile> files) 

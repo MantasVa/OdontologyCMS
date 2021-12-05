@@ -4,7 +4,7 @@ using Odontology.Domain.Models;
 
 namespace Odontology.Business.Infrastructure.Extensions
 {
-    public static class MappingExtensions
+    internal static class MappingExtensions
     {
         public static Visit ToVisit(this VisitCreateDto visitCreateDto)
         {

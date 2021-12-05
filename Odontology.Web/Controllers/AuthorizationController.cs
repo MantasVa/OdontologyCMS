@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Mapster;
@@ -22,6 +23,7 @@ namespace Odontology.Web.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IUserService userService;
         private readonly IRoleService roleService;
+        private readonly int itemsPerPage = 10;
 
         public AuthorizationController(SignInManager<ApplicationUser> signInManager,
                                        UserManager<ApplicationUser> userManager,
@@ -87,7 +89,7 @@ namespace Odontology.Web.Controllers
         } 
         
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminList(string name = null, string email = null)
+        public IActionResult AdminList(int pageNumber = 1, string name = null, string email = null)
         {
             var usersListViewModel = userService.GetAll().Adapt<IEnumerable<UserViewModel>>();
             
@@ -101,7 +103,19 @@ namespace Odontology.Web.Controllers
                 usersListViewModel = usersListViewModel.Where(x => x.Email.ToLower().Contains(email.ToLower()));
             }
             
-            return View(usersListViewModel);
+            var pageUsers = usersListViewModel.OrderByDescending(x => x.CreatedOn)
+                .Skip((pageNumber - 1) * itemsPerPage)
+                .Take(itemsPerPage).ToList();
+            
+            return View(new UserAdminIndexViewModel
+            {
+                Users = pageUsers,
+                PagingInfo = new PagingViewModel
+                {
+                    CurrentPage = pageNumber,
+                    TotalPages = (int)Math.Ceiling((double)usersListViewModel.Count() / itemsPerPage)
+                }
+            });
         }
         
         [Authorize(Roles = "Admin")]

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
@@ -14,6 +15,7 @@ namespace Odontology.Web.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService employeeService;
+        private readonly int itemsPerPage = 10;
 
         public EmployeeController(IEmployeeService employeeService)
         {
@@ -32,7 +34,7 @@ namespace Odontology.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminList(string name = null, string email = null)
+        public IActionResult AdminList(int pageNumber = 1, string name = null, string email = null)
         {
             var employeesViewModel = employeeService.GetAll().Adapt<IEnumerable<EmployeeTableViewModel>>();
 
@@ -46,7 +48,20 @@ namespace Odontology.Web.Controllers
                 employeesViewModel = employeesViewModel.Where(x => x.Email.ToLower().Contains(email.ToLower()));
             }
             
-            return View(employeesViewModel);
+            var pageEmployees = employeesViewModel.OrderByDescending(x => x.CreatedOn)
+                .Skip((pageNumber - 1) * itemsPerPage)
+                .Take(itemsPerPage).ToList();
+
+            
+            return View(new EmployeeAdminIndexViewModel
+            {
+                Employees = pageEmployees,
+                PagingInfo = new PagingViewModel
+                {
+                    CurrentPage = pageNumber,
+                    TotalPages = (int)Math.Ceiling((double)employeesViewModel.Count() / itemsPerPage)
+                }
+            });
         }
         
         [Authorize(Roles = "Admin")]

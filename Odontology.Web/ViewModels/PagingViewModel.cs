@@ -1,6 +1,6 @@
 ﻿namespace Odontology.Web.ViewModels
 {
-    public class PagedViewModel
+    public class PagingViewModel
     {
         public int CurrentPage { get; set; }
         

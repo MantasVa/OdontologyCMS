@@ -12,19 +12,19 @@
         var createdOnLocalTime = Model[i].CreatedOn.ToLocalTime();
 
         <div class="row">
-            <div class="col-xl-4">
+            <div class="col" style="display: flex; justify-content: flex-end">
                 @if (Model[i].Images.Any())
                 {
                     <a asp-controller="Article" asp-action="Details" asp-route-id="@Model[i].Id">
                         <img src="@Url.Action("Render", "Image", new { id = Model[i].Images.First().Id })"
-                             alt="@Model[i].Images.First().CreatedOn" class="img-fluid">
+                             alt="@Model[i].Images.First().CreatedOn" class="img-fluid" style="max-width: 300px">
                     </a>
 
                 }
                 else
                 {
                     <a asp-controller="Article" asp-action="Details" asp-route-id="@Model[i].Id">
-                        <img src="~/img/post-image.png" class="img-fluid"></a>
+                        <img src="~/img/post-image.png" class="img-fluid" style="max-width: 300px"></a>
                  } 
             </div>
             <div class="col-xl-8">

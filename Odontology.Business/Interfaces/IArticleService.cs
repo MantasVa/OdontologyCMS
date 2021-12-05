@@ -10,7 +10,7 @@ namespace Odontology.Business.Interfaces
 
         IEnumerable<ArticleDto> GetAll();
 
-        void AddOrEdit(ArticleCreateDto articleCreateDto);
+        Task AddOrEditAsync(ArticleCreateDto articleCreateDto);
 
         Task DeleteAsync(int id);
     }

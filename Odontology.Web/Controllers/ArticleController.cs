@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Mapster;
@@ -15,6 +16,7 @@ namespace Odontology.Web.Controllers
     public class ArticleController : Controller
     {
         private readonly IArticleService articleService;
+        private readonly int itemsPerPage = 10;
 
         public ArticleController(IArticleService articleService)
         {
@@ -22,7 +24,7 @@ namespace Odontology.Web.Controllers
         }
         
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminList(string title = null, string author = null)
+        public IActionResult AdminList([FromQuery]int pageNumber = 1, [FromQuery]string title = null, [FromQuery]string author = null)
         {
             var articlesViewModel = articleService.GetAll().Adapt<IEnumerable<ArticleViewModel>>();
             
@@ -35,8 +37,20 @@ namespace Odontology.Web.Controllers
             {
                 articlesViewModel = articlesViewModel.Where(x => x.CreatedBy.ToLower().Contains(author.ToLower()));
             }
+            
+            var pageArticles = articlesViewModel.OrderByDescending(x => x.CreatedOn)
+                .Skip((pageNumber - 1) * itemsPerPage)
+                .Take(itemsPerPage).ToList();
 
-            return View(articlesViewModel);
+            return View(new ArticleAdminIndexViewModel
+            {
+                Articles = pageArticles,
+                PagingInfo = new PagingViewModel
+                {
+                    CurrentPage = pageNumber,
+                    TotalPages = (int)Math.Ceiling((double)articlesViewModel.Count() / itemsPerPage)
+                }
+            });
         }
 
         [Authorize]
@@ -80,7 +94,7 @@ namespace Odontology.Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult Create(ArticleCreateViewModel viewModel)
+        public async Task<IActionResult> Create(ArticleCreateViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -89,16 +103,16 @@ namespace Odontology.Web.Controllers
 
             var articleCreateDto = viewModel.ToArticleCreateDto();
 
-            articleService.AddOrEdit(articleCreateDto);
+            await articleService.AddOrEditAsync(articleCreateDto);
 
             return RedirectToAction(nameof(AdminList));
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            articleService.DeleteAsync(id);
+            await articleService.DeleteAsync(id);
 
             return RedirectToAction(nameof(AdminList));
         }
