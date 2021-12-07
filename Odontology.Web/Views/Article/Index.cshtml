@@ -8,7 +8,7 @@
 
     @for (int i = 0; i < Model.Count(); i++)
     {
-        var postBody = Model[i].Body.Length <= 500 ? Model[i].Body : Model[i].Body.Substring(0, 500) + "...";
+        var postBody = Model[i]?.Body?.Length > 500 ? Model[i].Body.Substring(0, 500) + "..." : Model[i].Body;
         var createdOnLocalTime = Model[i].CreatedOn.ToLocalTime();
 
         <div class="row">
@@ -39,11 +39,11 @@
                     </a>
                 </div>
             </div>
+            @if (i + 1 != Model.Count())
+            {
+                <hr>
+            }
         </div>
-        @if (i + 1 != Model.Count())
-        {
-            <hr>
-        }
     }
 
 </div>

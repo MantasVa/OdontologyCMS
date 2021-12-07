@@ -163,7 +163,7 @@ namespace Odontology.Business.Services
             var patient = await userRepository.GetByIdAsync(patientId);
             
             string subject = "Vizitas Dentmedic";
-            string body = "";
+            string body;
             switch (actionType)
             {
                 case ActionTypeEnum.Create:

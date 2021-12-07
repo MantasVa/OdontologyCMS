@@ -42,8 +42,8 @@ namespace Odontology.Web
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddIdentity<ApplicationUser, ApplicationRole>(opt =>
             {
-                opt.Password.RequiredLength = 1;
-                opt.Password.RequireDigit = false;
+                opt.Password.RequiredLength = 6;
+                opt.Password.RequireDigit = true;
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireLowercase = false;
                 opt.User.RequireUniqueEmail = true;
